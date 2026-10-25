@@ -67,12 +67,152 @@ const fontBody = "'Inter', sans-serif";
 const fontMono = "'JetBrains Mono', monospace";
 
 const LANGS = [
-  { id: "en", label: "EN" },
-  { id: "hi", label: "हि" },
-  { id: "mr", label: "मर" },
+  { id: "en", label: "EN", name: "English" },
+  { id: "hi", label: "हि", name: "हिन्दी" },
+  { id: "mr", label: "मर", name: "मराठी" },
 ];
 
+let activeLanguage = "en";
+
+const UI_TRANSLATIONS = {
+  hi: {
+    Open: "खुला है", Logout: "लॉग आउट", "Switch to dark mode": "डार्क मोड चालू करें", "Switch to light mode": "लाइट मोड चालू करें", "Dark mode": "डार्क मोड", "Light mode": "लाइट मोड",
+    "Weekly sales": "साप्ताहिक बिक्री", "Your shop at a glance": "आपकी दुकान की एक झलक", "LAST 7 DAYS": "पिछले 7 दिन", "this week": "इस सप्ताह", "Daily sales": "दैनिक बिक्री", "Weekly sales trend chart": "साप्ताहिक बिक्री का चार्ट",
+    "Offers for your shop": "आपकी दुकान के ऑफ़र", "Sponsored · sample": "प्रायोजित · नमूना", "See offer": "ऑफ़र देखें", "Choose an offer": "ऑफ़र चुनें", "Monsoon promo video": "मानसून का प्रचार वीडियो", "The promo video could not be loaded.": "प्रचार वीडियो लोड नहीं हो सका।",
+    "Tell me what you sold, for example: \"umbrella 2\".": "बताएं कि आपने क्या बेचा, उदाहरण: \"छाता 2\"।", "Type the item name, for example: \"Soap 100g\".": "उत्पाद का नाम लिखें, उदाहरण: \"साबुन 100 ग्राम\"।", "e.g. umbrella 2": "जैसे: छाता 2", "e.g. Soap 100g": "जैसे: साबुन 100 ग्राम",
+    "Shop report": "दुकान की रिपोर्ट", "A quick view of what is happening and what to do next.": "क्या हो रहा है और आगे क्या करना है, इसकी संक्षिप्त जानकारी।", "Items low": "कम स्टॉक वाले उत्पाद", "Selling more": "ज़्यादा बिक रहा है", "ANDHERI MARKET PULSE": "अंधेरी बाज़ार की हलचल", "Nearby pulse": "आस-पास की हलचल", "External signals affecting your shop": "आपकी दुकान को प्रभावित करने वाले बाहरी संकेत", UPDATED: "अपडेट किया गया",
+    "Opportunity signal": "मौके का संकेत", "Use local events, weather and nearby-shop activity as an early signal for what customers may want next.": "स्थानीय कार्यक्रम, मौसम और आसपास की दुकानों की गतिविधि से पता लगाएं कि ग्राहक आगे क्या चाह सकते हैं।", "Financial performance": "वित्तीय प्रदर्शन", "Revenue, expenses and business result": "आय, खर्च और कारोबार का नतीजा", "Customer payments": "ग्राहक भुगतान", "Keep cash collection visible alongside sales": "बिक्री के साथ नकद वसूली भी देखें", Collected: "मिला हुआ", Pending: "बाकी", received: "प्राप्त", "to collect": "वसूलना है",
+    "Simple answers about your shop — what to sell, buy and keep.": "आपकी दुकान के आसान सुझाव — क्या बेचें, खरीदें और रखें।", "No matching stock.": "मिलता-जुलता स्टॉक नहीं मिला।", "Demand line chart": "मांग का रेखा-चार्ट", "Illustration of a neighborhood shop": "आस-पड़ोस की दुकान का चित्र",
+    "Message": "संदेश", Online: "ऑनलाइन", Offline: "ऑफ़लाइन", Owner: "मालिक", "Connected shop": "जुड़ी हुई दुकान", "Receive shop update": "दुकान का अपडेट प्राप्त करें", "Type your message": "अपना संदेश लिखें", "Send message": "संदेश भेजें", "Select shop": "दुकान चुनें", YOU: "आप",
+    "Show password": "पासवर्ड दिखाएं", "Hide password": "पासवर्ड छिपाएं", "Toggle theme": "थीम बदलें", "Check alerts": "अलर्ट देखें", "Decide using sales trends": "बिक्री के रुझान से निर्णय लें",
+    "What is left health": "बचे हुए स्टॉक की स्थिति", "Where to replenish first": "पहले कहां स्टॉक भरें", "Replenishment priority": "स्टॉक भरने की प्राथमिकता", "Start with products closest to their safety level": "सुरक्षा सीमा के सबसे करीब उत्पादों से शुरू करें",
+    "Monsoon umbrella pack": "मानसून के छातों का पैक", "12 umbrellas · wholesale rate": "12 छाते · थोक भाव", "Rainy day essentials": "बारिश के ज़रूरी सामान", "Keep raincoats ready for the weekend": "सप्ताहांत के लिए रेनकोट तैयार रखें", "Stock up for the season": "मौसम के लिए स्टॉक रखें", "Popular monsoon items · better value": "लोकप्रिय मानसून उत्पाद · बेहतर कीमत",
+    "Show offer": "ऑफ़र दिखाएं", "Sales today": "आज की बिक्री", "Money sold today": "आज की बिक्री", "Things worth checking today": "आज जांचने योग्य बातें", "What may sell more": "क्या अधिक बिक सकता है", "What is selling more or less": "क्या अधिक या कम बिक रहा है", "Is it selling more?": "क्या इसकी बिक्री बढ़ रही है?", "Last 7 days": "पिछले 7 दिन", "Sold today": "आज बिका", "Low stock": "कम स्टॉक", "Fast movers": "तेज़ी से बिकने वाले", "Money left": "बाकी रकम", "compared with yesterday": "कल की तुलना में", "items to buy soon": "जल्द खरीदने वाले उत्पाद", "selling faster": "तेज़ी से बिक रहा है",
+    "Alert count": "अलर्ट की संख्या", "Receive shop update": "दुकान का अपडेट प्राप्त करें", "Request sent": "अनुरोध भेजा गया", "Connect to message": "संदेश भेजने के लिए जुड़ें", "Connect first to message": "संदेश भेजने के लिए पहले जुड़ें", "Your available stock is visible to nearby shops": "आपका उपलब्ध स्टॉक पास की दुकानों को दिख रहा है",
+    Mon: "सोम", Tue: "मंगल", Wed: "बुध", Thu: "गुरु", Fri: "शुक्र", Sat: "शनि", Sun: "रवि",
+    "Storefront illustration": "दुकान का चित्र", "Promotional video": "प्रचार वीडियो", "Message shop": "दुकान को संदेश भेजें",
+    "OPTICAL_SCAN // 01": "ऑप्टिकल स्कैन // ०१", "● LIVE": "● लाइव", "EAN / UPC": "EAN / UPC", "FOCUS 98%": "फोकस ९८%", "ISO AUTO": "ISO ऑटो",
+    "Items selling faster": "तेज़ी से बिकने वाले उत्पाद", "Which items are moving faster": "कौन-से उत्पाद तेज़ी से बिक रहे हैं", "What do you sell more?": "आप क्या अधिक बेचते हैं?", "Popular products": "लोकप्रिय उत्पाद", "Sales are changing": "बिक्री में बदलाव हो रहा है",
+    "Join nearby shops": "आस-पास की दुकानों से जुड़ें", "No matching stock.": "मिलता-जुलता स्टॉक नहीं मिला।", "Message ·": "संदेश ·", "away": "दूर", "Request stock": "स्टॉक का अनुरोध करें", "Share stock": "स्टॉक साझा करें",
+    "Monsoon shop promotion video": "मानसून का दुकान प्रचार वीडियो", "Could not save your password in this browser. Check browser storage settings and try again.": "इस ब्राउज़र में पासवर्ड सेव नहीं हो सका। ब्राउज़र स्टोरेज सेटिंग जांचें और फिर कोशिश करें।", "Could not save your account in this browser. Check browser storage settings and try again.": "इस ब्राउज़र में खाता सेव नहीं हो सका। ब्राउज़र स्टोरेज सेटिंग जांचें और फिर कोशिश करें।", "Secure sign-in is unavailable. Please use a supported browser and try again.": "सुरक्षित लॉगिन उपलब्ध नहीं है। समर्थित ब्राउज़र में फिर कोशिश करें।",
+    "Please wait…": "कृपया प्रतीक्षा करें…", "umbrella": "छाता", "Soap 100g": "साबुन 100 ग्राम", "Received": "मिला", "No products yet": "अभी कोई उत्पाद नहीं",
+    "Month": "महीना", LIVE: "लाइव", "Shop report": "दुकान की रिपोर्ट", "Items selling faster": "तेज़ी से बिकने वाले उत्पाद", "Which items are moving faster": "कौन-से उत्पाद तेज़ी से बिक रहे हैं",
+    "Umbrellas": "छाते", "Cold drinks": "ठंडे पेय", "Mosquito repellents": "मच्छर भगाने वाले उत्पाद", "Winter wear": "सर्दियों के कपड़े", "What should you check?": "आपको क्या जांचना चाहिए?", "Things worth checking today": "आज जांचने योग्य बातें",
+    "Usual day": "सामान्य दिन", "Last day": "पिछला दिन", Change: "बदलाव", items: "उत्पाद", "What is left health": "बचे हुए स्टॉक की स्थिति", "Safety": "सुरक्षा सीमा", Capacity: "क्षमता",
+    "Urgent items": "ज़रूरी उत्पाद", "at / below safety": "सुरक्षा सीमा पर या नीचे", "Top priority": "सबसे ज़रूरी", "3 items remaining": "3 उत्पाद बाकी", "External signals affecting your shop": "आपकी दुकान को प्रभावित करने वाले बाहरी संकेत",
+    "Your available stock is visible to nearby shops": "आपका उपलब्ध स्टॉक पास की दुकानों को दिख रहा है", "I have stock available. How many do you need?": "मेरे पास स्टॉक उपलब्ध है। आपको कितनी मात्रा चाहिए?", "Thanks. I will keep it ready for you.": "धन्यवाद। मैं इसे आपके लिए तैयार रखूंगा।",
+  },
+  mr: {
+    Open: "उघडे", Logout: "लॉग आउट", "Switch to dark mode": "डार्क मोड सुरू करा", "Switch to light mode": "लाईट मोड सुरू करा", "Dark mode": "डार्क मोड", "Light mode": "लाईट मोड",
+    "Weekly sales": "आठवड्याची विक्री", "Your shop at a glance": "तुमच्या दुकानाची झलक", "LAST 7 DAYS": "मागील ७ दिवस", "this week": "या आठवड्यात", "Daily sales": "दैनिक विक्री", "Weekly sales trend chart": "आठवड्याच्या विक्रीचा आलेख",
+    "Offers for your shop": "तुमच्या दुकानासाठी ऑफर", "Sponsored · sample": "प्रायोजित · नमुना", "See offer": "ऑफर पाहा", "Choose an offer": "ऑफर निवडा", "Monsoon promo video": "पावसाळी प्रचार व्हिडिओ", "The promo video could not be loaded.": "प्रचार व्हिडिओ लोड होऊ शकला नाही.",
+    "Tell me what you sold, for example: \"umbrella 2\".": "काय विकले ते सांगा, उदाहरण: \"छत्री २\".", "Type the item name, for example: \"Soap 100g\".": "वस्तूचे नाव लिहा, उदाहरण: \"साबण १०० ग्रॅम\".", "e.g. umbrella 2": "उदा. छत्री २", "e.g. Soap 100g": "उदा. साबण १०० ग्रॅम",
+    "Shop report": "दुकानाचा अहवाल", "A quick view of what is happening and what to do next.": "काय घडत आहे आणि पुढे काय करायचे याची थोडक्यात माहिती.", "Items low": "कमी साठ्यातील वस्तू", "Selling more": "जास्त विक्री", "ANDHERI MARKET PULSE": "अंधेरी बाजारातील घडामोडी", "Nearby pulse": "जवळपासच्या घडामोडी", "External signals affecting your shop": "तुमच्या दुकानावर परिणाम करणारे बाह्य संकेत", UPDATED: "अपडेट केले",
+    "Opportunity signal": "संधीचा संकेत", "Use local events, weather and nearby-shop activity as an early signal for what customers may want next.": "स्थानिक कार्यक्रम, हवामान आणि जवळच्या दुकानांच्या हालचालींवरून ग्राहकांना पुढे काय हवे असेल याचा अंदाज घ्या.", "Financial performance": "आर्थिक कामगिरी", "Revenue, expenses and business result": "उत्पन्न, खर्च आणि व्यवसायाचा निकाल", "Customer payments": "ग्राहकांची देयके", "Keep cash collection visible alongside sales": "विक्रीसोबत रोख वसुलीही पाहा", Collected: "मिळाले", Pending: "बाकी", received: "प्राप्त", "to collect": "वसूल करायचे",
+    "Simple answers about your shop — what to sell, buy and keep.": "तुमच्या दुकानासाठी सोपे मार्गदर्शन — काय विकावे, खरेदी करावे आणि ठेवावे.", "No matching stock.": "जुळणारा साठा सापडला नाही.", "Demand line chart": "मागणीचा रेषा आलेख", "Illustration of a neighborhood shop": "शेजारच्या दुकानाचे चित्र",
+    "Message": "संदेश", Online: "ऑनलाइन", Offline: "ऑफलाइन", Owner: "मालक", "Connected shop": "जोडलेले दुकान", "Receive shop update": "दुकानाची माहिती मिळवा", "Type your message": "तुमचा संदेश लिहा", "Send message": "संदेश पाठवा", "Select shop": "दुकान निवडा", YOU: "तुम्ही",
+    "Show password": "पासवर्ड दाखवा", "Hide password": "पासवर्ड लपवा", "Toggle theme": "थीम बदला", "Check alerts": "सूचना तपासा", "Decide using sales trends": "विक्रीच्या कलावरून निर्णय घ्या",
+    "What is left health": "उरलेल्या साठ्याची स्थिती", "Where to replenish first": "प्रथम कुठे साठा भरावा", "Replenishment priority": "साठा भरण्याचे प्राधान्य", "Start with products closest to their safety level": "सुरक्षा मर्यादेजवळ असलेल्या वस्तूंनी सुरुवात करा",
+    "Monsoon umbrella pack": "पावसाळी छत्र्यांचा संच", "12 umbrellas · wholesale rate": "१२ छत्र्या · घाऊक दर", "Rainy day essentials": "पावसाळ्यासाठी आवश्यक वस्तू", "Keep raincoats ready for the weekend": "आठवड्याच्या शेवटीसाठी रेनकोट तयार ठेवा", "Stock up for the season": "हंगामासाठी साठा करा", "Popular monsoon items · better value": "लोकप्रिय पावसाळी वस्तू · चांगली किंमत",
+    "Show offer": "ऑफर दाखवा", "Sales today": "आजची विक्री", "Money sold today": "आजची विक्री", "Things worth checking today": "आज तपासण्यासारख्या गोष्टी", "What may sell more": "काय जास्त विकले जाऊ शकते", "What is selling more or less": "कशाची विक्री वाढते किंवा घटते", "Is it selling more?": "याची विक्री वाढते आहे का?", "Last 7 days": "मागील ७ दिवस", "Sold today": "आज विकले", "Low stock": "कमी साठा", "Fast movers": "जलद विक्रीच्या वस्तू", "Money left": "उरलेली रक्कम", "compared with yesterday": "कालच्या तुलनेत", "items to buy soon": "लवकर खरेदी करायच्या वस्तू", "selling faster": "जलद विक्री होत आहे",
+    "Alert count": "सूचनांची संख्या", "Request sent": "विनंती पाठवली", "Connect to message": "संदेशासाठी जोडा", "Connect first to message": "संदेशासाठी आधी जोडा", "Your available stock is visible to nearby shops": "तुमचा उपलब्ध साठा जवळच्या दुकानांना दिसत आहे",
+    Mon: "सोम", Tue: "मंगळ", Wed: "बुध", Thu: "गुरु", Fri: "शुक्र", Sat: "शनि", Sun: "रवि",
+    "Storefront illustration": "दुकानाचे चित्र", "Promotional video": "प्रचार व्हिडिओ", "Message shop": "दुकानाला संदेश पाठवा",
+    "Items selling faster": "जलद विक्री होणाऱ्या वस्तू", "Which items are moving faster": "कोणत्या वस्तू जलद विकल्या जात आहेत", "What do you sell more?": "तुम्ही काय जास्त विकता?", "Popular products": "लोकप्रिय वस्तू", "Sales are changing": "विक्रीत बदल होत आहे",
+    "Join nearby shops": "जवळच्या दुकानांशी जोडा", "Message ·": "संदेश ·", "away": "अंतरावर", "Request stock": "साठ्याची विनंती करा", "Share stock": "साठा शेअर करा",
+    "Monsoon shop promotion video": "पावसाळी दुकान प्रचार व्हिडिओ", "Could not save your password in this browser. Check browser storage settings and try again.": "या ब्राउझरमध्ये पासवर्ड जतन होऊ शकला नाही. ब्राउझर स्टोरेज सेटिंग तपासून पुन्हा प्रयत्न करा.", "Could not save your account in this browser. Check browser storage settings and try again.": "या ब्राउझरमध्ये खाते जतन होऊ शकले नाही. ब्राउझर स्टोरेज सेटिंग तपासून पुन्हा प्रयत्न करा.", "Secure sign-in is unavailable. Please use a supported browser and try again.": "सुरक्षित लॉगिन उपलब्ध नाही. समर्थित ब्राउझरमध्ये पुन्हा प्रयत्न करा.",
+    "Please wait…": "कृपया थांबा…", "umbrella": "छत्री", "Soap 100g": "साबण १०० ग्रॅम", "Received": "मिळाले", "No products yet": "अद्याप उत्पादने नाहीत",
+    "Month": "महिना", LIVE: "थेट", "Shop report": "दुकानाचा अहवाल", "Items selling faster": "जलद विक्री होणाऱ्या वस्तू", "Which items are moving faster": "कोणत्या वस्तू जलद विकल्या जात आहेत",
+    "Umbrellas": "छत्र्या", "Cold drinks": "थंड पेये", "Mosquito repellents": "डास प्रतिबंधक उत्पादने", "Winter wear": "हिवाळी कपडे", "What should you check?": "तुम्ही काय तपासावे?", "Things worth checking today": "आज तपासण्यासारख्या गोष्टी",
+    "Usual day": "सामान्य दिवस", "Last day": "मागील दिवस", Change: "बदल", items: "वस्तू", "What is left health": "उरलेल्या साठ्याची स्थिती", "Safety": "सुरक्षा मर्यादा", Capacity: "क्षमता",
+    "Urgent items": "तातडीच्या वस्तू", "at / below safety": "सुरक्षा मर्यादेवर किंवा खाली", "Top priority": "सर्वाधिक प्राधान्य", "3 items remaining": "३ वस्तू शिल्लक", "External signals affecting your shop": "तुमच्या दुकानावर परिणाम करणारे बाह्य संकेत",
+    "Your available stock is visible to nearby shops": "तुमचा उपलब्ध साठा जवळच्या दुकानांना दिसत आहे", "I have stock available. How many do you need?": "माझ्याकडे साठा उपलब्ध आहे. तुम्हाला किती हवा आहे?", "Thanks. I will keep it ready for you.": "धन्यवाद. मी तो तुमच्यासाठी तयार ठेवतो.",
+  },
+};
+
+Object.assign(UI_TRANSLATIONS.hi, {
+  "One clear view of what is happening, what is changing and what to do next.": "क्या हो रहा है, क्या बदल रहा है और आगे क्या करना है—एक नज़र में।",
+  "What may sell more": "क्या ज़्यादा बिक सकता है", "What is selling more or less": "क्या ज़्यादा या कम बिक रहा है",
+  "What should you check?": "आपको क्या जांचना चाहिए?", "Usual day": "आम दिन", "Last day": "पिछला दिन",
+  "What is left health": "बचे हुए स्टॉक की स्थिति", "Where to replenish first": "पहले कहां स्टॉक भरें",
+  "Safety": "सुरक्षा सीमा", "Capacity": "क्षमता", "Urgent items": "ज़रूरी उत्पाद", "at / below safety": "सुरक्षा सीमा पर या नीचे",
+  "Top priority": "सबसे ज़रूरी", "3 items remaining": "3 उत्पाद बाकी", "Nearby pulse": "आस-पास की हलचल",
+  "Opportunity signal": "मौके का संकेत", "Financial performance": "वित्तीय प्रदर्शन",
+  "Use local events, weather and nearby-shop activity as an early signal for what customers may want next.": "स्थानीय कार्यक्रम, मौसम और आस-पास की दुकानों की गतिविधि से जानें कि ग्राहक आगे क्या चाह सकते हैं।",
+  "Revenue, expenses and business result": "आय, खर्च और कारोबार का नतीजा", "Keep cash collection visible alongside sales": "बिक्री के साथ नकद वसूली भी देखें",
+  "Close window": "विंडो बंद करें", "Live market data": "बाज़ार का लाइव डेटा",
+  "What do you sell more?": "आप क्या अधिक बेचते हैं?", "Popular products": "लोकप्रिय उत्पाद", "Sales are changing": "बिक्री में बदलाव हो रहा है",
+  "What may sell more": "क्या ज़्यादा बिक सकता है", "What is selling more or less": "क्या ज़्यादा या कम बिक रहा है",
+  "I have stock available. How many do you need?": "मेरे पास स्टॉक उपलब्ध है। आपको कितनी मात्रा चाहिए?",
+  "Thanks. I will keep it ready for you.": "धन्यवाद। मैं इसे आपके लिए तैयार रखूंगा।",
+  "Message shop": "दुकान को संदेश भेजें", "Connect to message": "संदेश भेजने के लिए जुड़ें",
+  "Connect first to message": "संदेश भेजने के लिए पहले जुड़ें", "away": "दूर",
+  Apr: "अप्रैल", May: "मई", Jun: "जून", Jul: "जुलाई", Aug: "अगस्त", Sep: "सितंबर",
+  "Sales by month": "महीने के अनुसार बिक्री", "Payment status": "भुगतान की स्थिति",
+  "Milk, rice & household items": "दूध, चावल और घरेलू सामान", "Monthly grocery credit": "मासिक किराना उधार",
+  "Cold drinks & snacks": "ठंडे पेय और नाश्ता", "Milk and biscuits": "दूध और बिस्कुट",
+  UPI: "यूपीआई", Cash: "नकद", Udhaar: "उधार", Today: "आज", Tomorrow: "कल",
+  New: "नया", "Shelf A1": "शेल्फ A1", "Shelf B2": "शेल्फ B2", "Shelf B3": "शेल्फ B3",
+  "Rack C1": "रैक C1", "Rack C2": "रैक C2", "Fridge D1": "फ्रिज D1", "Floor E1": "फर्श E1",
+  "Winter clothing": "सर्दियों के कपड़े",
+});
+
+Object.assign(UI_TRANSLATIONS.mr, {
+  "One clear view of what is happening, what is changing and what to do next.": "काय घडत आहे, काय बदलत आहे आणि पुढे काय करायचे—एका नजरेत.",
+  "What may sell more": "काय जास्त विकले जाऊ शकते", "What is selling more or less": "कशाची विक्री वाढते किंवा घटते",
+  "What should you check?": "तुम्ही काय तपासावे?", "Usual day": "सामान्य दिवस", "Last day": "मागील दिवस",
+  "What is left health": "उरलेल्या साठ्याची स्थिती", "Where to replenish first": "प्रथम कुठे साठा भरावा",
+  "Safety": "सुरक्षा मर्यादा", "Capacity": "क्षमता", "Urgent items": "तातडीच्या वस्तू", "at / below safety": "सुरक्षा मर्यादेवर किंवा खाली",
+  "Top priority": "सर्वाधिक प्राधान्य", "3 items remaining": "३ वस्तू शिल्लक", "Nearby pulse": "जवळपासच्या घडामोडी",
+  "Use local events, weather and nearby-shop activity as an early signal for what customers may want next.": "स्थानिक कार्यक्रम, हवामान आणि जवळच्या दुकानांच्या हालचालींवरून ग्राहकांना पुढे काय हवे असेल याचा अंदाज घ्या.",
+  "Revenue, expenses and business result": "उत्पन्न, खर्च आणि व्यवसायाचा निकाल", "Keep cash collection visible alongside sales": "विक्रीसोबत रोख वसुलीही पाहा",
+  "Close window": "विंडो बंद करा", "Live market data": "बाजारातील थेट माहिती",
+  "Message shop": "दुकानाला संदेश पाठवा", "Connect to message": "संदेशासाठी जोडा",
+  "Connect first to message": "संदेशासाठी आधी जोडा", "away": "अंतरावर",
+  Apr: "एप्रिल", May: "मे", Jun: "जून", Jul: "जुलै", Aug: "ऑगस्ट", Sep: "सप्टेंबर",
+  "Sales by month": "महिन्यानुसार विक्री", "Payment status": "पेमेंटची स्थिती",
+  "Milk, rice & household items": "दूध, तांदूळ आणि घरगुती वस्तू", "Monthly grocery credit": "मासिक किराणा उधार",
+  "Cold drinks & snacks": "थंड पेये आणि नाश्ता", "Milk and biscuits": "दूध आणि बिस्किटे",
+  UPI: "यूपीआय", Cash: "रोख", Udhaar: "उधार", Today: "आज", Tomorrow: "उद्या",
+  New: "नवीन", "Shelf A1": "शेल्फ A1", "Shelf B2": "शेल्फ B2", "Shelf B3": "शेल्फ B3",
+  "Rack C1": "रॅक C1", "Rack C2": "रॅक C2", "Fridge D1": "फ्रिज D1", "Floor E1": "जमिनीवर",
+  "Winter clothing": "हिवाळी कपडे",
+});
+
+export function uiText(text, language = activeLanguage) {
+  return UI_TRANSLATIONS[language]?.[text] || text;
+}
+
+function weekdayLabels() {
+  if (activeLanguage === "hi") return ["सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि", "रवि"];
+  if (activeLanguage === "mr") return ["सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि", "रवि"];
+  return ["M", "T", "W", "T", "F", "S", "S"];
+}
+
 const ACCOUNT_STORAGE_KEY = "dukaan-mitra.accounts";
+const DEMO_ACCOUNT_SETUP_KEY = "dukaan-mitra.demo-account-v1";
+const STOCK_STORAGE_KEY = "dukaan-mitra.stock";
+const LANGUAGE_STORAGE_KEY = "dukaan-mitra.language";
+
+export function loadSavedLanguage() {
+  try {
+    const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    return LANGS.some(({ id }) => id === savedLanguage) ? savedLanguage : "en";
+  } catch (error) {
+    console.error("Unable to load the saved language preference.", error);
+    return "en";
+  }
+}
+const DEMO_PHONE = "7045643088";
+const DEMO_ACCOUNT = {
+  owner: "Sharma Jii",
+  shop: "Laxmi Super Market",
+  phone: DEMO_PHONE,
+  type: "kirana",
+  area: "Andheri East",
+  passwordSalt: "nJjyfv7Nyo+4fl3/AGf9Eg==",
+  passwordHash: "sLHXOo2Apodl6TlFliepGmdJx+aPI0KbkHAgpQt2dVM=",
+};
 
 function encodeBytes(bytes) {
   return btoa(Array.from(bytes, (byte) => String.fromCharCode(byte)).join(""));
@@ -82,14 +222,14 @@ function decodeBytes(value) {
   return Uint8Array.from(atob(value), (character) => character.charCodeAt(0));
 }
 
-async function createPasswordHash(password) {
+export async function createPasswordHash(password) {
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
   const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", salt, iterations: 120000, hash: "SHA-256" }, key, 256);
   return { passwordSalt: encodeBytes(salt), passwordHash: encodeBytes(new Uint8Array(bits)) };
 }
 
-async function verifyPassword(password, saltValue, expectedHash) {
+export async function verifyPassword(password, saltValue, expectedHash) {
   const salt = decodeBytes(saltValue);
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
   const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", salt, iterations: 120000, hash: "SHA-256" }, key, 256);
@@ -98,13 +238,17 @@ async function verifyPassword(password, saltValue, expectedHash) {
   return actualHash.length === savedHash.length && actualHash.every((byte, index) => byte === savedHash[index]);
 }
 
+function createRecoveryCode() {
+  const bytes = crypto.getRandomValues(new Uint8Array(12));
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0").toUpperCase()).join("").match(/.{1,4}/g).join("-");
+}
+
 function loadSavedAccounts() {
   try {
     const saved = localStorage.getItem(ACCOUNT_STORAGE_KEY);
-    if (!saved) return [];
-    const accounts = JSON.parse(saved);
+    const accounts = saved ? JSON.parse(saved) : [];
     if (!Array.isArray(accounts)) throw new Error("Saved account data is not a list.");
-    return accounts.filter((account) =>
+    const validAccounts = accounts.filter((account) =>
       account &&
       typeof account.owner === "string" &&
       typeof account.shop === "string" &&
@@ -112,9 +256,45 @@ function loadSavedAccounts() {
       typeof account.passwordSalt === "string" &&
       typeof account.passwordHash === "string"
     );
+    const demoIndex = validAccounts.findIndex((account) => account.phone === DEMO_PHONE);
+    if (demoIndex === -1) {
+      validAccounts.push(DEMO_ACCOUNT);
+    } else {
+      const existingDemo = validAccounts[demoIndex];
+      validAccounts[demoIndex] = {
+        ...existingDemo,
+        ...(!localStorage.getItem(DEMO_ACCOUNT_SETUP_KEY) ? DEMO_ACCOUNT : {}),
+        owner: DEMO_ACCOUNT.owner,
+        shop: DEMO_ACCOUNT.shop,
+        recoverySalt: existingDemo.recoverySalt,
+        recoveryHash: existingDemo.recoveryHash,
+      };
+    }
+    if (!localStorage.getItem(DEMO_ACCOUNT_SETUP_KEY)) {
+      try {
+        localStorage.setItem(ACCOUNT_STORAGE_KEY, JSON.stringify(validAccounts));
+        localStorage.setItem(DEMO_ACCOUNT_SETUP_KEY, "true");
+      } catch (error) {
+        console.error("Unable to save the demo shop account.", error);
+      }
+    }
+    return validAccounts;
   } catch (error) {
     console.error("Unable to load saved shop accounts.", error);
-    return [];
+    return [DEMO_ACCOUNT];
+  }
+}
+
+export function loadSavedStock(phone) {
+  try {
+    const saved = localStorage.getItem(`${STOCK_STORAGE_KEY}.${phone}`);
+    if (!saved) return phone === DEMO_PHONE ? initialStock : [];
+    const stock = JSON.parse(saved);
+    if (!Array.isArray(stock)) throw new Error("Saved stock data is not a list.");
+    return phone === DEMO_PHONE && stock.length === 0 ? initialStock : stock;
+  } catch (error) {
+    console.error("Unable to load saved shop stock.", error);
+    return phone === DEMO_PHONE ? initialStock : [];
   }
 }
 
@@ -448,7 +628,7 @@ function StatusBar({ lang, setLang, lightMode, setLightMode }) {
         <div className="flex items-center gap-0.5 rounded-full px-1 py-1" style={{ background: C.cardAlt, border: `1px solid ${C.border}` }}>
           <Globe size={10} className="ml-1" color={C.faint} />
           {LANGS.map((l) => (
-            <button key={l.id} onClick={() => setLang(l.id)} className="pill-btn px-2 py-1 rounded-full text-[9.5px] font-bold transition-colors" style={{ background: lang === l.id ? `linear-gradient(90deg, ${C.accent}, ${C.accent2})` : "transparent", color: lang === l.id ? C.onAccent : C.faint }}>
+            <button key={l.id} aria-label={l.name} title={l.name} onClick={() => setLang(l.id)} className="pill-btn px-2 py-1 rounded-full text-[9.5px] font-bold transition-colors" style={{ background: lang === l.id ? `linear-gradient(90deg, ${C.accent}, ${C.accent2})` : "transparent", color: lang === l.id ? C.onAccent : C.faint }}>
               {l.label}
             </button>
           ))}
@@ -456,8 +636,8 @@ function StatusBar({ lang, setLang, lightMode, setLightMode }) {
         <div className="flex items-center gap-1" style={{ color: C.faint }}>
                     <button
             type="button"
-            aria-label={lightMode ? "Switch to dark mode" : "Switch to light mode"}
-            title={lightMode ? "Dark mode" : "Light mode"}
+            aria-label={uiText(lightMode ? "Switch to dark mode" : "Switch to light mode")}
+            title={uiText(lightMode ? "Dark mode" : "Light mode")}
             onClick={() => setLightMode((value) => !value)}
             className="theme-toggle pill-btn flex items-center justify-center rounded-full"
             style={{ color: C.text, background: C.cardAlt, border: `1px solid ${C.border}`, width: 26, height: 26 }}
@@ -472,7 +652,7 @@ function StatusBar({ lang, setLang, lightMode, setLightMode }) {
 
 function Header({ title, subtitle }) {
   const initials = (USER.shop || "DM").split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
-  const typeLabel = (AUTH.en.types[USER.type] || "");
+  const typeLabel = (AUTH[activeLanguage].types[USER.type] || "");
   return (
     <header className="app-header">
       <div className="shop-banner" style={{ background: C.hero, boxShadow: `0 18px 42px -30px ${C.accent}aa` }}>
@@ -483,8 +663,8 @@ function Header({ title, subtitle }) {
             <p className="truncate text-[17px] font-extrabold leading-tight text-white" style={{ fontFamily: fontHead }}>{USER.shop}</p>
             <p className="truncate text-[12px]" style={{ color: "rgba(235,246,255,.78)" }}>{typeLabel}{typeLabel && " · "}{USER.owner}</p>
           </div>
-          <span className="shop-live-pill"><i /> Open</span>
-          <button type="button" aria-label="Logout" title="Logout" onClick={() => USER.logout()} className="pill-btn flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "rgba(255,255,255,0.16)", color: "#fff" }}>
+          <span className="shop-live-pill"><i /> {uiText("Open")}</span>
+          <button type="button" aria-label={uiText("Logout")} title={uiText("Logout")} onClick={() => USER.logout()} className="pill-btn flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "rgba(255,255,255,0.16)", color: "#fff" }}>
             <LogOut size={17} />
           </button>
         </div>
@@ -617,7 +797,7 @@ function TopNav({ tabs, tab, setTab, alertCount, alertCountLabel }) {
 function ActiveTabIllustration({ id }) {
   if (id === "alerts") {
     return (
-      <svg className="top-nav-icon active-tab-illustration" width="23" height="23" viewBox="0 0 24 24" role="img" aria-label="Check alerts">
+      <svg className="top-nav-icon active-tab-illustration" width="23" height="23" viewBox="0 0 24 24" role="img" aria-label={uiText("Check alerts")}>
         <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" fill="#ffd84d" stroke="#fff4bd" strokeWidth="1.4" strokeLinejoin="round" />
         <path d="M9.5 21h5" stroke="#ffd84d" strokeWidth="2.5" strokeLinecap="round" />
         <path d="M12 5v2" stroke="#a76b08" strokeWidth="1.3" strokeLinecap="round" />
@@ -626,7 +806,7 @@ function ActiveTabIllustration({ id }) {
   }
 
   return (
-    <svg className="top-nav-icon active-tab-illustration" width="23" height="23" viewBox="0 0 24 24" role="img" aria-label="Decide using sales trends">
+    <svg className="top-nav-icon active-tab-illustration" width="23" height="23" viewBox="0 0 24 24" role="img" aria-label={uiText("Decide using sales trends")}>
       <rect x="3" y="12" width="4" height="8" rx="1" fill="#f6d04d" />
       <rect x="10" y="7" width="4" height="13" rx="1" fill="#f7f3e8" />
       <rect x="17" y="3" width="4" height="17" rx="1" fill="#75d7a5" />
@@ -648,7 +828,7 @@ function QuickAction({ icon: Icon, label, onClick, tone }) {
 
 function WeeklySalesCard() {
   const values = [15, 21, 17, 29, 25, 37, 32];
-  const labels = ["M", "T", "W", "T", "F", "S", "S"];
+  const labels = weekdayLabels();
   const points = values.map((value, index) => `${18 + index * 53},${108 - value * 2.1}`).join(" ");
   const area = `${points} 336,112 18,112`;
 
@@ -659,22 +839,22 @@ function WeeklySalesCard() {
           <div className="flex items-center gap-2.5">
             <IconBadge icon={BarChart3} tone={C.accent2} size={38} />
             <div>
-              <p className="text-[14px] font-extrabold" style={{ color: C.text, fontFamily: fontHead }}>Weekly sales</p>
-              <p className="mt-0.5 text-[11px]" style={{ color: C.faint }}>Your shop at a glance</p>
+              <p className="text-[14px] font-extrabold" style={{ color: C.text, fontFamily: fontHead }}>{uiText("Weekly sales")}</p>
+              <p className="mt-0.5 text-[11px]" style={{ color: C.faint }}>{uiText("Your shop at a glance")}</p>
             </div>
           </div>
-          <span className="chart-period">LAST 7 DAYS</span>
+          <span className="chart-period">{uiText("LAST 7 DAYS")}</span>
         </div>
         <div className="mt-4 flex items-end justify-between gap-3">
           <div>
             <p className="text-[26px] font-extrabold leading-none tracking-tight" style={{ color: C.text, fontFamily: fontHead }}>₹28,420</p>
             <p className="mt-2 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold" style={{ color: C.accent, background: `${C.accent}17` }}>
-              <TrendingUp size={12} /> 8.2% <span style={{ color: C.faint }}>this week</span>
+              <TrendingUp size={12} /> 8.2% <span style={{ color: C.faint }}>{uiText("this week")}</span>
             </p>
           </div>
-          <div className="chart-legend"><i /> Daily sales</div>
+          <div className="chart-legend"><i /> {uiText("Daily sales")}</div>
         </div>
-        <svg className="weekly-chart mt-3 w-full" viewBox="0 0 354 132" role="img" aria-label="Weekly sales trend chart">
+        <svg className="weekly-chart mt-3 w-full" viewBox="0 0 354 132" role="img" aria-label={uiText("Weekly sales trend chart")}>
           {[24, 52, 80, 108].map((y) => <line key={y} x1="18" x2="336" y1={y} y2={y} stroke={C.border} strokeDasharray="3 6" />)}
           <polygon className="weekly-chart-area" points={area} fill="url(#weekly-fill)" />
           <polyline className="weekly-chart-line" points={points} fill="none" stroke={C.accent} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
@@ -734,65 +914,81 @@ function HeroMarketIllustration() {
   );
 }
 
-function HomeScreen({ t, stock, onOpenReason, onRecordSale, onAddProduct, onOpenBrief, onScan, onLater }) {
-  const today = new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" });
+function HomeScreen({ t, stock, onOpenReason, onRecordSale, onAddProduct, onOpenBrief, onScan, onLater, showPromotionalImages }) {
+  const locale = activeLanguage === "hi" ? "hi-IN" : activeLanguage === "mr" ? "mr-IN" : "en-IN";
+  const today = new Date().toLocaleDateString(locale, { weekday: "long", day: "numeric", month: "long" });
   const lowStockCount = stock.filter((item) => item.qty < item.min).length;
   return (
     <main className="offers-screen flex-1 overflow-y-auto pb-6">
       <Header title={`${t.greeting}, ${USER.owner}`} subtitle={today} />
-      <div className="mx-5 mt-1">
-        <div className="sales-hero relative overflow-hidden rounded-[28px] p-5" style={{ background: C.hero, boxShadow: `0 24px 55px -28px ${C.accent}88`, color: "#fff" }}>
-          <div className="hero-grid absolute inset-0" aria-hidden="true" />
-          <div className="hero-orb hero-orb-one" aria-hidden="true" />
-          <div className="hero-orb hero-orb-two" aria-hidden="true" />
-          <HeroMarketIllustration />
-          <div className="relative z-10 flex items-center justify-between gap-3">
-            <p className="text-[12px] font-bold uppercase tracking-[0.14em]" style={{ color: "rgba(226,246,255,.8)" }}>{t.statSales}</p>
-          </div>
-          <div className="relative z-10 mt-2">
-            <p className="text-[44px] font-extrabold leading-none tracking-[-0.05em]" style={{ fontFamily: fontHead }}>₹4,280</p>
-          </div>
-          <div className="relative z-10 mt-4 flex flex-wrap gap-2">
-            <span className="hero-metric">{t.yesterdayChange}</span>
-            <span className="hero-metric hero-metric-warm">{lowStockCount} {t.items} {t.heroLowLabel}</span>
-          </div>
+      {stock.length === 0 ? <>
+        <div className="mx-5 mt-3">
+          <GlassCard className="p-5 text-center">
+            <IconBadge icon={PackagePlus} tone={C.accent} size={42} />
+            <p className="mt-3 text-[15px] font-extrabold" style={{ color: C.text, fontFamily: fontHead }}>{t.emptyStockTitle}</p>
+            <p className="mt-1.5 text-[12px] leading-relaxed" style={{ color: C.sub }}>{t.emptyStockBody}</p>
+          </GlassCard>
         </div>
-      </div>
-      <div className="mx-5 mt-3 grid grid-cols-3 gap-2">
-        <QuickAction icon={ShoppingCart} label={t.recordSale} onClick={onRecordSale} tone={C.accent} />
-        <QuickAction icon={PackagePlus} label={t.addProduct} onClick={onAddProduct} tone={C.warn} />
-        <QuickAction icon={ScanLine} label={t.scan} onClick={onScan} tone={C.accent2} />
-      </div>
-      <SectionLabel>{t.aiRec}</SectionLabel>
-      <SuggestionCard t={t} onOpen={onOpenReason} onLater={onLater} />
-      <WeeklySalesCard />
-      <WeatherCard t={t} />
-      <div className="mx-5 mt-3">
-        <GlassCard className="flex items-center justify-between gap-3 p-4" style={{ background: `linear-gradient(135deg, ${C.gold}1c, ${C.card})`, borderColor: `${C.gold}55` }}>
-          <div className="flex items-start gap-3">
-            <IconBadge icon={Sparkles} tone={C.gold} size={38} />
-            <div>
-              <p className="text-[13px] font-bold" style={{ color: C.text, fontFamily: fontHead }}>{t.aiBriefTitle}</p>
-              <p className="mt-1 text-[11px] leading-snug" style={{ color: C.sub }}>{t.aiBriefBody}</p>
+        <div className="mx-5 mt-3 grid grid-cols-2 gap-2">
+          <QuickAction icon={PackagePlus} label={t.addProduct} onClick={onAddProduct} tone={C.warn} />
+          <QuickAction icon={ScanLine} label={t.scan} onClick={onScan} tone={C.accent2} />
+        </div>
+        <OfferVideoContent onOpenReason={onOpenReason} showPromotionalImages={showPromotionalImages} />
+      </> : <>
+        <div className="mx-5 mt-1">
+          <div className="sales-hero relative overflow-hidden rounded-[28px] p-5" style={{ background: C.hero, boxShadow: `0 24px 55px -28px ${C.accent}88`, color: "#fff" }}>
+            <div className="hero-grid absolute inset-0" aria-hidden="true" />
+            <div className="hero-orb hero-orb-one" aria-hidden="true" />
+            <div className="hero-orb hero-orb-two" aria-hidden="true" />
+            <HeroMarketIllustration />
+            <div className="relative z-10 flex items-center justify-between gap-3">
+              <p className="text-[12px] font-bold uppercase tracking-[0.14em]" style={{ color: "rgba(226,246,255,.8)" }}>{t.statSales}</p>
+            </div>
+            <div className="relative z-10 mt-2">
+              <p className="text-[44px] font-extrabold leading-none tracking-[-0.05em]" style={{ fontFamily: fontHead }}>₹4,280</p>
+            </div>
+            <div className="relative z-10 mt-4 flex flex-wrap gap-2">
+              <span className="hero-metric">{t.yesterdayChange}</span>
+              <span className="hero-metric hero-metric-warm">{lowStockCount} {t.items} {t.heroLowLabel}</span>
             </div>
           </div>
-          <button onClick={onOpenBrief} className="shrink-0 rounded-xl px-3 py-2 text-[11px] font-bold" style={{ background: C.card, color: C.accent, border: `1px solid ${C.accent}55` }}>{t.viewBrief}</button>
-        </GlassCard>
-      </div>
-      <OfferVideoContent onOpenReason={onOpenReason} />
-      <SectionLabel>{t.tabAlerts}</SectionLabel>
-      <div className="mx-5 mt-3 notification-card flex items-start gap-3" role="status">
-        <IconBadge icon={Bell} tone={C.accent2} size={36} />
-        <div>
-          <p className="text-[12.5px] font-semibold" style={{ color: C.text, fontFamily: fontHead }}>{t.rainNotificationTitle}</p>
-          <p className="mt-1 text-[11px] leading-snug" style={{ color: C.sub }}>{t.rainNotification}</p>
         </div>
-      </div>
+        <div className="mx-5 mt-3 grid grid-cols-3 gap-2">
+          <QuickAction icon={ShoppingCart} label={t.recordSale} onClick={onRecordSale} tone={C.accent} />
+          <QuickAction icon={PackagePlus} label={t.addProduct} onClick={onAddProduct} tone={C.warn} />
+          <QuickAction icon={ScanLine} label={t.scan} onClick={onScan} tone={C.accent2} />
+        </div>
+        <SectionLabel>{t.aiRec}</SectionLabel>
+        {showPromotionalImages && <SuggestionCard t={t} onOpen={onOpenReason} onLater={onLater} />}
+        <WeeklySalesCard />
+        <WeatherCard t={t} />
+        <div className="mx-5 mt-3">
+          <GlassCard className="flex items-center justify-between gap-3 p-4" style={{ background: `linear-gradient(135deg, ${C.gold}1c, ${C.card})`, borderColor: `${C.gold}55` }}>
+            <div className="flex items-start gap-3">
+              <IconBadge icon={Sparkles} tone={C.gold} size={38} />
+              <div>
+                <p className="text-[13px] font-bold" style={{ color: C.text, fontFamily: fontHead }}>{t.aiBriefTitle}</p>
+                <p className="mt-1 text-[11px] leading-snug" style={{ color: C.sub }}>{t.aiBriefBody}</p>
+              </div>
+            </div>
+            <button onClick={onOpenBrief} className="shrink-0 rounded-xl px-3 py-2 text-[11px] font-bold" style={{ background: C.card, color: C.accent, border: `1px solid ${C.accent}55` }}>{t.viewBrief}</button>
+          </GlassCard>
+        </div>
+        <OfferVideoContent onOpenReason={onOpenReason} showPromotionalImages={showPromotionalImages} />
+        <SectionLabel>{t.tabAlerts}</SectionLabel>
+        <div className="mx-5 mt-3 notification-card flex items-start gap-3" role="status">
+          <IconBadge icon={Bell} tone={C.accent2} size={36} />
+          <div>
+            <p className="text-[12.5px] font-semibold" style={{ color: C.text, fontFamily: fontHead }}>{t.rainNotificationTitle}</p>
+            <p className="mt-1 text-[11px] leading-snug" style={{ color: C.sub }}>{t.rainNotification}</p>
+          </div>
+        </div>
+      </>}
     </main>
   );
 }
 
-function OfferVideoContent({ onOpenReason }) {
+function OfferVideoContent({ onOpenReason, showPromotionalImages }) {
   const [selectedOffer, setSelectedOffer] = useState(0);
   const [videoError, setVideoError] = useState("");
   const videoRef = useRef(null);
@@ -805,38 +1001,38 @@ function OfferVideoContent({ onOpenReason }) {
 
   return (
     <div className="offer-video-content">
-      <section className="mx-5 mt-1" aria-labelledby="offers-heading">
+      {showPromotionalImages && <section className="mx-5 mt-1" aria-labelledby="offers-heading">
         <div className="offers-section-heading">
-          <h2 id="offers-heading">Offers for your shop</h2>
-          <span>Sponsored · sample</span>
+          <h2 id="offers-heading">{uiText("Offers for your shop")}</h2>
+          <span>{uiText("Sponsored · sample")}</span>
         </div>
         <article className="offer-card" style={{ "--offer-start": offer.color, "--offer-end": offer.end }}>
           <div className="offer-card-copy">
-            <h3>{offer.title}</h3>
-            <p>{offer.detail}</p>
+            <h3>{uiText(offer.title)}</h3>
+            <p>{uiText(offer.detail)}</p>
             <button type="button" onClick={onOpenReason} className="offer-cta">
-              See offer <ArrowRight size={17} />
+              {uiText("See offer")} <ArrowRight size={17} />
             </button>
           </div>
           <div className="offer-art">
-            <ProductIllustration kind={selectedOffer === 1 ? "cloud" : "umbrella"} size={104} label={offer.title} />
+            <ProductIllustration kind={selectedOffer === 1 ? "cloud" : "umbrella"} size={104} label={uiText(offer.title)} />
           </div>
         </article>
-        <div className="offer-pagination" aria-label="Choose an offer">
+        <div className="offer-pagination" aria-label={uiText("Choose an offer")}>
           {offers.map((item, index) => (
             <button
               key={item.title}
               type="button"
-              aria-label={`Show offer ${index + 1}: ${item.title}`}
+              aria-label={`${uiText("Show offer")} ${index + 1}: ${uiText(item.title)}`}
               aria-current={selectedOffer === index ? "true" : undefined}
               className={selectedOffer === index ? "active" : ""}
               onClick={() => setSelectedOffer(index)}
             />
           ))}
         </div>
-      </section>
+      </section>}
 
-      <section className="mx-5 mt-4" aria-label="Monsoon promo video">
+      <section className="mx-5 mt-4" aria-label={uiText("Monsoon promo video")}>
         <div className="promo-video-card">
           <video
             ref={videoRef}
@@ -847,9 +1043,9 @@ function OfferVideoContent({ onOpenReason }) {
             controls
             playsInline
             preload="auto"
-            poster={promoPoster}
-            onError={() => setVideoError("The promo video could not be loaded.")}
-            aria-label="Monsoon shop promotion video"
+            poster={showPromotionalImages && activeLanguage === "en" ? promoPoster : undefined}
+            onError={() => setVideoError(uiText("The promo video could not be loaded."))}
+            aria-label={uiText("Monsoon shop promotion video")}
           >
             <source src={promoVideo} type="video/mp4" />
           </video>
@@ -893,8 +1089,8 @@ function ActionSheet({ t, mode, onClose, onSaved }) {
       <div className="w-full rounded-t-3xl p-5 pb-8" style={{ background: C.screen, borderTop: `1px solid ${C.borderStrong}` }} onClick={(e) => e.stopPropagation()}>
         <div className="w-10 h-1 rounded-full mx-auto mb-4" style={{ background: C.border }} />
         <p className="text-[14px] font-bold" style={{ color: C.text, fontFamily: fontHead }}>{isSale ? t.recordSale : t.addProduct}</p>
-        <p className="text-[11px] mt-1 mb-4" style={{ color: C.sub }}>{isSale ? 'Tell me what you sold, for example: "umbrella 2".' : 'Type the item name, for example: "Soap 100g".'}</p>
-        <input value={value} onChange={(e) => setValue(e.target.value)} placeholder={isSale ? "e.g. umbrella 2" : "e.g. Soap 100g"} className="w-full rounded-xl px-4 py-3 text-[12px] outline-none mb-3" style={{ background: C.cardAlt, border: `1px solid ${C.borderStrong}`, color: C.text }} />
+        <p className="text-[11px] mt-1 mb-4" style={{ color: C.sub }}>{uiText(isSale ? 'Tell me what you sold, for example: "umbrella 2".' : 'Type the item name, for example: "Soap 100g".')}</p>
+        <input value={value} onChange={(e) => setValue(e.target.value)} placeholder={uiText(isSale ? "e.g. umbrella 2" : "e.g. Soap 100g")} className="w-full rounded-xl px-4 py-3 text-[12px] outline-none mb-3" style={{ background: C.cardAlt, border: `1px solid ${C.borderStrong}`, color: C.text }} />
         <button onClick={submit} className="w-full rounded-xl py-3 text-[12px] font-bold" style={{ background: `linear-gradient(90deg, ${C.accent}, ${C.accent2})`, color: C.onAccent }}>{isSale ? t.saleRecorded : t.addProduct}</button>
       </div>
     </div>
@@ -973,11 +1169,11 @@ function ScanModal({ t, onClose, onFound }) {
             <span className="scanner-crosshair scanner-crosshair-y" />
           </div>
           <div className="scanner-readout absolute left-5 right-5 flex items-center justify-between text-[10px]" style={{ color: C.faint, fontFamily: fontMono }}>
-            <span>OPTICAL_SCAN // 01</span>
-            <span style={{ color: C.accent }}>● LIVE</span>
+            <span>{uiText("OPTICAL_SCAN // 01")}</span>
+            <span style={{ color: C.accent }}>{uiText("● LIVE")}</span>
           </div>
           <div className="scanner-metrics absolute left-5 right-5 flex items-center justify-between text-[9px]" style={{ color: C.faint, fontFamily: fontMono }}>
-            <span>EAN / UPC</span><span>FOCUS 98%</span><span>ISO AUTO</span>
+            <span>{uiText("EAN / UPC")}</span><span>{uiText("FOCUS 98%")}</span><span>{uiText("ISO AUTO")}</span>
           </div>
           <div className="scanner-status absolute flex flex-col items-center gap-2" role="status" aria-live="polite">
             <p className="text-[12px] font-semibold tracking-wide" style={{ color: C.accent, fontFamily: fontMono }}>
@@ -1141,7 +1337,7 @@ function StockScreen({ t, lang, stock, onChange, onScanClick, onAddProduct, onRe
                   <ProductIllustration kind={illustration} size={46} label={pname(item, lang)} />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[12.5px] font-semibold" style={{ color: C.text }}>{pname(item, lang)}</p>
-                    <p className="mt-0.5 text-[9.5px]" style={{ color: C.faint }}>{item.loc}</p>
+                    <p className="mt-0.5 text-[9.5px]" style={{ color: C.faint }}>{uiText(item.loc)}</p>
                     <p className="mt-0.5 text-[10px] font-semibold" style={{ color: statusTone }}>{status}</p>
                     <div className="stock-level-track mt-2" aria-label={`${Math.round(stockLevel)}% of stock capacity`}>
                       <span style={{ width: `${stockLevel}%`, background: low ? C.danger : stockLevel > 75 ? C.warn : C.accent }} />
@@ -1157,13 +1353,33 @@ function StockScreen({ t, lang, stock, onChange, onScanClick, onAddProduct, onRe
             </GlassCard>
           );
         })}
-        {visible.length === 0 && <GlassCard className="p-5 text-center"><Search size={20} color={C.faint} className="mx-auto mb-2" /><p className="text-[11px]" style={{ color: C.sub }}>No matching stock.</p></GlassCard>}
+        {visible.length === 0 && <GlassCard className="p-5 text-center"><Search size={20} color={C.faint} className="mx-auto mb-2" /><p className="text-[11px]" style={{ color: C.sub }}>{uiText("No matching stock.")}</p></GlassCard>}
       </div>
     </div>
   );
 }
 
-function AlertsScreen({ t, dismissedIds, onDismiss, onAction }) {
+function EmptyDataCard({ t }) {
+  return (
+    <div className="mx-5 mt-4">
+      <GlassCard className="p-5 text-center">
+        <IconBadge icon={ClipboardList} tone={C.accent} size={42} />
+        <p className="mt-3 text-[14px] font-extrabold" style={{ color: C.text, fontFamily: fontHead }}>{t.emptyDataTitle}</p>
+        <p className="mt-1.5 text-[12px] leading-relaxed" style={{ color: C.sub }}>{t.emptyDataBody}</p>
+      </GlassCard>
+    </div>
+  );
+}
+
+function AlertsScreen({ t, dismissedIds, onDismiss, onAction, hasSampleData }) {
+  if (!hasSampleData) {
+    return (
+      <div className="flex-1 overflow-y-auto pb-4">
+        <Header title={t.alertsHeader} subtitle={t.alertsSub} />
+        <EmptyDataCard t={t} />
+      </div>
+    );
+  }
   const alerts = [
     { id: "umbrella", title: t.a1t, body: t.a1b, tone: C.danger, kind: "umbrella", tag: t.alertUrgent, progress: 30, action: t.alertActionBuy },
     { id: "drinks", title: t.a2t, body: t.a2b, tone: C.warn, kind: "bottle", tag: t.alertRising, progress: 45 },
@@ -1238,14 +1454,14 @@ function DemandShiftPage({ t, lang, stock, onAction }) {
         <div className="flex items-center gap-2.5">
           <IconBadge icon={Sparkles} tone={C.accent} size={34} />
           <div className="min-w-0">
-            <p className="text-[13px] font-bold" style={{ color: C.text, fontFamily: fontHead }}>Shop report</p>
-            <p className="mt-0.5 text-[10.5px]" style={{ color: C.sub }}>A quick view of what is happening and what to do next.</p>
+            <p className="text-[13px] font-bold" style={{ color: C.text, fontFamily: fontHead }}>{uiText("Shop report")}</p>
+            <p className="mt-0.5 text-[10.5px]" style={{ color: C.sub }}>{uiText("A quick view of what is happening and what to do next.")}</p>
           </div>
         </div>
         <div className="mt-3 grid grid-cols-3 gap-2">
           {[
-            { icon: Package, value: lowCount, label: "Items low", tone: lowCount ? C.danger : C.accent },
-            { icon: TrendingUp, value: risingCount, label: "Selling more", tone: C.accent },
+            { icon: Package, value: lowCount, label: uiText("Items low"), tone: lowCount ? C.danger : C.accent },
+            { icon: TrendingUp, value: risingCount, label: uiText("Selling more"), tone: C.accent },
             { icon: CircleDollarSign, value: `₹${(netResult / 1000).toFixed(1)}k`, label: t.netResult, tone: C.warn },
           ].map((metric) => (
             <div key={metric.label} className="report-stat">
@@ -1264,7 +1480,7 @@ function DemandShiftPage({ t, lang, stock, onAction }) {
           </div>
           <span className="rounded-full px-2 py-1 text-[9px] font-bold" style={{ color: C.accent, background: `${C.accent}14` }}>+{Math.round(pctChange(umbrellaSeries))}%</span>
         </div>
-        <MiniLineChart values={umbrellaSeries} labels={["M", "T", "W", "T", "F", "S", "S"]} forecast={Math.max(0, Math.round(umbrellaRegression.next))} height={132} />
+        <MiniLineChart values={umbrellaSeries} labels={weekdayLabels()} forecast={Math.max(0, Math.round(umbrellaRegression.next))} height={132} />
         <div className="flex justify-between text-[9px]" style={{ color: C.faint }}>
           <span>{t.forecastPast}</span><span>{t.forecastNow}</span><span>{t.forecastMay}</span>
         </div>
@@ -1279,8 +1495,8 @@ function DemandShiftPage({ t, lang, stock, onAction }) {
             { name: "Winter wear", value: -18, kind: "box", tone: C.danger },
           ].map((item) => (
             <div key={item.name} className="flex items-center gap-2">
-              <ProductIllustration kind={item.kind} size={30} label={item.name} />
-              <span className="min-w-0 flex-1 truncate text-[10px]" style={{ color: C.sub }}>{item.name}</span>
+              <ProductIllustration kind={item.kind} size={30} label={uiText(item.name)} />
+              <span className="min-w-0 flex-1 truncate text-[10px]" style={{ color: C.sub }}>{uiText(item.name)}</span>
               <div className="h-2 w-[30%] overflow-hidden rounded-full" style={{ background: C.cardAlt }}>
                 <span className="block h-full rounded-full" style={{ width: `${Math.min(100, Math.abs(item.value) / 1.4)}%`, background: item.tone }} />
               </div>
@@ -1292,8 +1508,8 @@ function DemandShiftPage({ t, lang, stock, onAction }) {
       <GlassCard className="forecast-chart p-4">
         <div className="flex items-center justify-between mb-2">
           <div>
-            <p className="text-[12px] font-bold" style={{ color: C.text }}>Items selling faster</p>
-            <p className="mt-0.5 text-[10px]" style={{ color: C.faint }}>Which items are moving faster</p>
+            <p className="text-[12px] font-bold" style={{ color: C.text }}>{uiText("Items selling faster")}</p>
+            <p className="mt-0.5 text-[10px]" style={{ color: C.faint }}>{uiText("Which items are moving faster")}</p>
           </div>
           <span className="text-[10px]" style={{ color: C.faint }}>0 - 100</span>
         </div>
@@ -1445,7 +1661,7 @@ function NetworkWindow({ title, children, onClose }) {
         <div className="w-10 h-1 rounded-full mx-auto mb-4" style={{ background: C.border }} />
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-[14px] font-bold" style={{ color: C.text, fontFamily: fontHead }}>{title}</h3>
-          <button onClick={onClose} className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: C.cardAlt }} aria-label="Close window"><X size={15} color={C.sub} /></button>
+          <button onClick={onClose} className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: C.cardAlt }} aria-label={uiText("Close window")}><X size={15} color={C.sub} /></button>
         </div>
         {children}
       </div>
@@ -1455,28 +1671,28 @@ function NetworkWindow({ title, children, onClose }) {
 
 function MessageWindow({ shop, onClose }) {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([{ from: shop.name, text: "I have stock available. How many do you need?", incoming: true }]);
+  const [messages, setMessages] = useState([{ from: shop.name, text: uiText("I have stock available. How many do you need?"), incoming: true }]);
   const [online, setOnline] = useState(true);
   const sendMessage = () => {
     if (!message.trim()) return;
     setMessages((current) => [...current, { from: "You", text: message.trim(), incoming: false }]);
     setMessage("");
   };
-  const receiveMessage = () => setMessages((current) => [...current, { from: shop.name, text: "Thanks. I will keep it ready for you.", incoming: true }]);
+  const receiveMessage = () => setMessages((current) => [...current, { from: shop.name, text: uiText("Thanks. I will keep it ready for you."), incoming: true }]);
   return (
-    <NetworkWindow title={`Message · ${shop.name}`} onClose={onClose}>
+    <NetworkWindow title={`${uiText("Message")} · ${shop.name}`} onClose={onClose}>
       <div className="p-3 rounded-xl mb-3" style={{ background: C.cardAlt, border: `1px solid ${C.border}` }}>
-        <div className="flex items-center justify-between"><p className="text-[11.5px] font-bold" style={{ color: C.text }}>{shop.name}</p><button onClick={() => setOnline((value) => !value)} className="flex items-center gap-1 text-[9px] font-bold" style={{ color: online ? C.accent : C.faint }}><ActivityDot /> {online ? "Online" : "Offline"}</button></div>
-        <p className="text-[10px] mt-1" style={{ color: C.sub }}>Owner: {shop.owner} · {shop.phone}</p>
-        <p className="text-[10px] mt-1" style={{ color: C.faint }}>{shop.address} · Connected shop</p>
+        <div className="flex items-center justify-between"><p className="text-[11.5px] font-bold" style={{ color: C.text }}>{shop.name}</p><button onClick={() => setOnline((value) => !value)} className="flex items-center gap-1 text-[9px] font-bold" style={{ color: online ? C.accent : C.faint }}><ActivityDot /> {uiText(online ? "Online" : "Offline")}</button></div>
+        <p className="text-[10px] mt-1" style={{ color: C.sub }}>{uiText("Owner")}: {shop.owner} · {shop.phone}</p>
+        <p className="text-[10px] mt-1" style={{ color: C.faint }}>{shop.address} · {uiText("Connected shop")}</p>
       </div>
       <div className="space-y-2 mb-3">
         {messages.map((item, index) => <div key={`${item.from}-${index}`} className="p-3 rounded-xl" style={{ background: item.incoming ? C.cardAlt : `${C.accent}15`, border: `1px solid ${C.border}` }}><p className="text-[9px] font-bold uppercase" style={{ color: item.incoming ? C.accent2 : C.accent }}>{item.from}</p><p className="text-[11.5px] mt-1" style={{ color: C.text }}>{item.text}</p></div>)}
       </div>
-      <button onClick={receiveMessage} className="mb-3 flex items-center gap-1.5 text-[10px] font-bold" style={{ color: C.accent2 }}><RefreshCw size={12} /> Receive shop update</button>
+      <button onClick={receiveMessage} className="mb-3 flex items-center gap-1.5 text-[10px] font-bold" style={{ color: C.accent2 }}><RefreshCw size={12} /> {uiText("Receive shop update")}</button>
       <div className="flex gap-2">
-        <input value={message} onChange={(event) => setMessage(event.target.value)} onKeyDown={(event) => event.key === "Enter" && sendMessage()} placeholder="Type your message" className="flex-1 rounded-xl px-3 py-3 text-[11px] outline-none" style={{ background: C.cardAlt, border: `1px solid ${C.borderStrong}`, color: C.text }} />
-        <button type="button" onClick={sendMessage} className="w-12 rounded-xl flex items-center justify-center" style={{ background: C.accent, color: C.onAccent }} aria-label="Send message" title="Send message"><Send size={15} /></button>
+        <input value={message} onChange={(event) => setMessage(event.target.value)} onKeyDown={(event) => event.key === "Enter" && sendMessage()} placeholder={uiText("Type your message")} className="flex-1 rounded-xl px-3 py-3 text-[11px] outline-none" style={{ background: C.cardAlt, border: `1px solid ${C.borderStrong}`, color: C.text }} />
+        <button type="button" onClick={sendMessage} className="w-12 rounded-xl flex items-center justify-center" style={{ background: C.accent, color: C.onAccent }} aria-label={uiText("Send message")} title={uiText("Send message")}><Send size={15} /></button>
       </div>
     </NetworkWindow>
   );
@@ -1496,13 +1712,13 @@ function ShopRadar({ shops, selectedShop, onSelect, label }) {
       <div className="absolute rounded-full" style={{ inset: "3%", border: `1px dashed ${C.border}` }} aria-hidden="true" />
       <div className="absolute rounded-full" style={{ inset: "27%", border: `1px dashed ${C.border}` }} aria-hidden="true" />
       <div className="absolute rounded-full" style={{ left: "50%", top: "50%", width: 16, height: 16, margin: -8, background: C.gold, boxShadow: `0 0 0 4px ${C.gold}44` }} aria-hidden="true" />
-      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-3 text-[9px] font-bold" style={{ color: C.faint }}>YOU</span>
+      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-3 text-[9px] font-bold" style={{ color: C.faint }}>{uiText("YOU")}</span>
       {shops.map((shop, index) => (
         <button
           key={shop.name}
           type="button"
           onClick={() => onSelect(shop.name)}
-          aria-label={`Select ${shop.name}`}
+          aria-label={`${uiText("Select shop")}: ${shop.name}`}
           aria-pressed={selectedShop === shop.name}
           className="radar-pin absolute flex items-center justify-center rounded-full"
           style={{
@@ -1524,7 +1740,7 @@ function ShopRadar({ shops, selectedShop, onSelect, label }) {
   );
 }
 
-function NetworkScreen({ t }) {
+function NetworkScreen({ t, hasSampleData }) {
   const [connectedShop, setConnectedShop] = useState(null);
   const [shared, setShared] = useState(false);
   const [requested, setRequested] = useState(null);
@@ -1541,6 +1757,14 @@ function NetworkScreen({ t }) {
     { name: "Patel Mart", owner: "Neha Patel", distance: "1.2 km", stock: "1 water carton", price: "₹44", address: "JB Nagar, Andheri East", phone: "+91 98201 77214" },
     { name: "Sai Daily Needs", owner: "Ravi Deshmukh", distance: "1.5 km", stock: "6 raincoats", price: "₹48", address: "Chakala Nearby", phone: "+91 98920 33418" },
   ];
+  if (!hasSampleData) {
+    return (
+      <div className="flex-1 overflow-y-auto pb-6">
+        <Header title={t.networkHeader} subtitle={t.networkSub} />
+        <EmptyDataCard t={t} />
+      </div>
+    );
+  }
   return (
     <div className="flex-1 overflow-y-auto pb-6">
       <Header title={t.networkHeader} subtitle={t.networkSub} />
@@ -1548,12 +1772,12 @@ function NetworkScreen({ t }) {
 
         <GlassCard className="p-4" style={{ background: `linear-gradient(145deg, ${C.accent2}25, ${C.card})`, borderColor: `${C.accent2}55` }}>
           <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2"><IconBadge icon={MapPin} tone={C.accent2} size={34} /><div><p className="text-[13px] font-bold" style={{ color: C.text, fontFamily: fontHead }}>ANDHERI MARKET PULSE</p><p className="text-[10px] mt-0.5" style={{ color: C.faint }}>{t.pulseUpdated}</p></div></div>
+            <div className="flex items-center gap-2"><IconBadge icon={MapPin} tone={C.accent2} size={34} /><div><p className="text-[13px] font-bold" style={{ color: C.text, fontFamily: fontHead }}>{uiText("ANDHERI MARKET PULSE")}</p><p className="text-[10px] mt-0.5" style={{ color: C.faint }}>{t.pulseUpdated}</p></div></div>
             <ActivityDot />
           </div>
           <p className="text-[12.5px] font-semibold mb-3" style={{ color: C.text }}>{t.pulseTitle}</p>
           <div className="grid grid-cols-2 gap-2">
-            {pulseRows.map((row) => { const kind = row.name === "Umbrellas" ? "umbrella" : row.name === "Cold drinks" ? "bottle" : "box"; return <div key={row.name} className="market-pulse-tile" style={{ background: C.cardAlt, border: `1px solid ${C.border}` }}><ProductIllustration kind={kind} size={38} label={row.name} /><div><span className="text-[10px]" style={{ color: C.sub }}>{row.name}</span><p className="text-[15px] font-bold mt-1" style={{ color: row.tone, fontFamily: fontMono }}>{row.value}</p></div></div>; })}
+            {pulseRows.map((row) => { const kind = row.name === "Umbrellas" ? "umbrella" : row.name === "Cold drinks" ? "bottle" : "box"; return <div key={row.name} className="market-pulse-tile" style={{ background: C.cardAlt, border: `1px solid ${C.border}` }}><ProductIllustration kind={kind} size={38} label={uiText(row.name)} /><div><span className="text-[10px]" style={{ color: C.sub }}>{uiText(row.name)}</span><p className="text-[15px] font-bold mt-1" style={{ color: row.tone, fontFamily: fontMono }}>{row.value}</p></div></div>; })}
           </div>
           <div className="mt-3 p-3 rounded-xl" style={{ background: `${C.accent}12`, borderLeft: `3px solid ${C.accent}` }}><div className="flex gap-2"><Sparkles size={14} color={C.accent} className="shrink-0 mt-0.5" /><p className="text-[11px] leading-relaxed" style={{ color: C.sub }}>{t.pulseInsight}</p></div></div>
         </GlassCard>
@@ -1570,19 +1794,19 @@ function NetworkScreen({ t }) {
               return <div key={shop.name} className="nearby-shop-card p-2.5 rounded-xl" style={{ background: C.cardAlt, border: `1px solid ${isSelected ? C.accent : C.border}`, "--stagger-index": index }}>
                 <div className="flex items-center gap-2.5">
                   <div className="shop-initials-avatar" role="img" aria-label={`${shop.name} shop`}>{shop.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("").toUpperCase()}</div>
-                  <div className="flex-1 min-w-0"><p className="text-[11.5px] font-semibold truncate" style={{ color: C.text }}>{shop.name}</p><p className="mt-1 flex items-center gap-1 text-[9.5px]" style={{ color: C.faint }}><MapPin size={10} color={C.accent2} /> {shop.distance} away</p></div>
+                  <div className="flex-1 min-w-0"><p className="text-[11.5px] font-semibold truncate" style={{ color: C.text }}>{shop.name}</p><p className="mt-1 flex items-center gap-1 text-[9.5px]" style={{ color: C.faint }}><MapPin size={10} color={C.accent2} /> {shop.distance} {uiText("away")}</p></div>
                   <button onClick={() => setConnectedShop(isConnected ? null : shop.name)} className="px-2.5 py-1.5 rounded-lg text-[10px] font-bold" style={{ color: isConnected ? C.accent : C.text, background: isConnected ? `${C.accent}18` : C.card, border: `1px solid ${isConnected ? C.accent : C.border}` }}>{isConnected ? <><CircleCheck size={12} /> {t.connected}</> : t.connect}</button>
                 </div>
                 <div className="mt-2 flex gap-2">
-                  <button onClick={() => setRequested(isRequested ? null : shop.name)} className="flex-1 py-1.5 rounded-lg text-[9.5px] font-bold" style={{ background: isRequested ? `${C.accent2}18` : C.card, color: isRequested ? C.accent2 : C.sub, border: `1px solid ${isRequested ? C.accent2 : C.border}` }}>{isRequested ? <><CircleCheck size={11} /> Request sent</> : <><Send size={11} /> {t.requestStock}</>}</button>
-                  <button type="button" onClick={() => isConnected && setWindow({ type: "message", shop })} disabled={!isConnected} className="px-3 py-1.5 rounded-lg text-[9.5px] font-bold" style={{ background: isConnected ? C.card : `${C.card}88`, color: isConnected ? C.sub : C.faint, border: `1px solid ${C.border}`, cursor: isConnected ? "pointer" : "not-allowed" }} aria-label={isConnected ? `Message ${shop.name}` : "Connect to message"} title={isConnected ? `Message ${shop.name}` : "Connect first to message"}><MessageCircle size={11} /></button>
+                  <button onClick={() => setRequested(isRequested ? null : shop.name)} className="flex-1 py-1.5 rounded-lg text-[9.5px] font-bold" style={{ background: isRequested ? `${C.accent2}18` : C.card, color: isRequested ? C.accent2 : C.sub, border: `1px solid ${isRequested ? C.accent2 : C.border}` }}>{isRequested ? <><CircleCheck size={11} /> {uiText("Request sent")}</> : <><Send size={11} /> {t.requestStock}</>}</button>
+                  <button type="button" onClick={() => isConnected && setWindow({ type: "message", shop })} disabled={!isConnected} className="px-3 py-1.5 rounded-lg text-[9.5px] font-bold" style={{ background: isConnected ? C.card : `${C.card}88`, color: isConnected ? C.sub : C.faint, border: `1px solid ${C.border}`, cursor: isConnected ? "pointer" : "not-allowed" }} aria-label={isConnected ? `${uiText("Message shop")} ${shop.name}` : uiText("Connect to message")} title={isConnected ? `${uiText("Message shop")} ${shop.name}` : uiText("Connect first to message")}><MessageCircle size={11} /></button>
                 </div>
               </div>;
             })}
           </div>
         </GlassCard>
 
-        <button onClick={() => setShared(!shared)} className="w-full rounded-xl py-3 flex items-center justify-center gap-2 text-[10.5px] font-bold" style={{ background: shared ? `${C.accent}18` : C.card, color: shared ? C.accent : C.sub, border: `1px solid ${shared ? C.accent : C.border}` }}><Send size={13} /> {shared ? "Your available stock is visible to nearby shops" : t.shareStock}</button>
+        <button onClick={() => setShared(!shared)} className="w-full rounded-xl py-3 flex items-center justify-center gap-2 text-[10.5px] font-bold" style={{ background: shared ? `${C.accent}18` : C.card, color: shared ? C.accent : C.sub, border: `1px solid ${shared ? C.accent : C.border}` }}><Send size={13} /> {shared ? uiText("Your available stock is visible to nearby shops") : t.shareStock}</button>
       </div>
       {window?.type === "message" && <MessageWindow shop={window.shop} onClose={() => setWindow(null)} />}
     </div>
@@ -1631,14 +1855,14 @@ function MyMoneyPage({ t }) {
 
       <GlassCard className="p-3">
         <div className="grid grid-cols-[42px_1fr_1fr_1fr] gap-2 px-1 pb-2 text-[9px] font-bold uppercase tracking-wide" style={{ color: C.faint }}>
-          <span>Month</span><span>{t.revenue}</span><span>{t.expenses}</span><span>{t.netResult}</span>
+          <span>{uiText("Month")}</span><span>{t.revenue}</span><span>{t.expenses}</span><span>{t.netResult}</span>
         </div>
         <div className="space-y-1.5">
           {monthlyFinancials.map((month) => {
             const result = month.revenue - month.expenses;
             return (
               <div key={month.month} className="grid grid-cols-[42px_1fr_1fr_1fr] gap-2 items-center rounded-xl px-1 py-2.5" style={{ background: C.cardAlt }}>
-                <span className="text-[11px] font-bold" style={{ color: C.text }}>{month.month}</span>
+                <span className="text-[11px] font-bold" style={{ color: C.text }}>{uiText(month.month)}</span>
                 <span className="text-[10px]" style={{ color: C.accent, fontFamily: fontMono }}>{formatCurrency(month.revenue)}</span>
                 <span className="text-[10px]" style={{ color: C.warn, fontFamily: fontMono }}>{formatCurrency(month.expenses)}</span>
                 <span className="text-[10px] font-bold" style={{ color: result >= 0 ? C.accent : C.danger, fontFamily: fontMono }}>{result >= 0 ? "+" : "-"}{formatCurrency(result)}</span>
@@ -1657,7 +1881,7 @@ function MyMoneyPage({ t }) {
               <p className="text-[10px] mt-0.5" style={{ color: C.faint }}>{t.paymentHistorySub}</p>
             </div>
           </div>
-          <span className="text-[9px] font-bold uppercase tracking-wide" style={{ color: C.accent }}>LIVE</span>
+          <span className="text-[9px] font-bold uppercase tracking-wide" style={{ color: C.accent }}>{uiText("LIVE")}</span>
         </div>
         <div className="grid grid-cols-3 gap-2 mb-3">
           <div className="rounded-xl p-2" style={{ background: `${C.accent}12` }}><p className="text-[13px] font-bold" style={{ color: C.accent, fontFamily: fontMono }}>{formatCurrency(collected)}</p><p className="text-[9px] mt-1" style={{ color: C.sub }}>{t.collected}</p></div>
@@ -1673,7 +1897,7 @@ function MyMoneyPage({ t }) {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[11.5px] font-semibold truncate" style={{ color: C.text }}>{payment.customer}</p>
-                <p className="text-[9px] mt-0.5 truncate" style={{ color: C.faint }}>{payment.detail} · {payment.mode} · {payment.due}</p>
+                <p className="text-[9px] mt-0.5 truncate" style={{ color: C.faint }}>{uiText(payment.detail)} · {uiText(payment.mode)} · {uiText(payment.due)}</p>
               </div>
               <div className="text-right shrink-0"><p className="text-[11px] font-bold" style={{ color: isPaid ? C.accent : C.warn, fontFamily: fontMono }}>{formatCurrency(payment.amount)}</p><p className="text-[8px] mt-0.5" style={{ color: isPaid ? C.accent : C.warn }}>{isPaid ? t.paymentReceived : t.paymentDue}</p></div>
             </div>;
@@ -1685,7 +1909,7 @@ function MyMoneyPage({ t }) {
 }
 
 function ActivityDot() {
-  return <span className="w-2 h-2 rounded-full" style={{ background: C.accent, boxShadow: `0 0 8px ${C.accent}` }} aria-label="Live market data" />;
+  return <span className="w-2 h-2 rounded-full" style={{ background: C.accent, boxShadow: `0 0 8px ${C.accent}` }} aria-label={uiText("Live market data")} />;
 }
 
 
@@ -1753,7 +1977,7 @@ function MiniLineChart({ values, labels = ["D1","D2","D3","D4","D5","D6","D7"], 
   const y = v => h - pad - ((v - min) / Math.max(max - min, 1)) * (h - pad * 2);
   const points = values.map((v, i) => `${x(i)},${y(v)}`).join(" ");
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="w-full" style={{ height }} role="img" aria-label="Demand line chart">
+    <svg viewBox={`0 0 ${w} ${h}`} className="w-full" style={{ height }} role="img" aria-label={uiText("Demand line chart")}>
       {[0, .25, .5, .75, 1].map((r) => {
         const yy = pad + r * (h - pad * 2);
         return <line key={r} x1={pad} x2={w-pad} y1={yy} y2={yy} stroke={C.border} strokeWidth="1" />;
@@ -1778,7 +2002,7 @@ function MiniBarChart({ items, maxValue }) {
     {items.map((item) => (
       <div key={item.label}>
         <div className="flex justify-between text-[10.5px] mb-1">
-          <span style={{ color: C.text }}>{item.label}</span>
+          <span style={{ color: C.text }}>{uiText(item.label)}</span>
           <span style={{ color: item.tone || C.accent, fontFamily: fontMono }}>{item.value}</span>
         </div>
         <div className="h-2 rounded-full overflow-hidden" style={{ background: C.cardAlt }}>
@@ -1792,14 +2016,14 @@ function MiniBarChart({ items, maxValue }) {
 function StatTile({ label, value, sub, tone = C.accent }) {
   return <GlassCard className="p-3">
     <p className="text-[18px] font-bold" style={{ color: tone, fontFamily: fontMono }}>{value}</p>
-    <p className="text-[10px] font-semibold mt-1" style={{ color: C.text }}>{label}</p>
-    {sub && <p className="text-[9px] mt-0.5" style={{ color: C.faint }}>{sub}</p>}
+    <p className="text-[10px] font-semibold mt-1" style={{ color: C.text }}>{uiText(label)}</p>
+    {sub && <p className="text-[9px] mt-0.5" style={{ color: C.faint }}>{uiText(sub)}</p>}
   </GlassCard>;
 }
 
 function BusinessInsights({ t, lang, stock, onAction }) {
   const [view, setView] = useState("overview");
-  const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const labels = weekdayLabels();
   const views = [
     ["overview", "Overview"],
     ["demand", "Demand"],
@@ -1944,7 +2168,7 @@ function BusinessInsights({ t, lang, stock, onAction }) {
             const ratio = Math.min(100, Math.max(4, item.qty / Math.max(item.max, 1) * 100));
             const critical = item.qty <= item.min;
             return <div key={item.id} className="p-3 rounded-xl" style={{background:C.cardAlt,border:`1px solid ${C.border}`}}>
-              <div className="flex justify-between items-center gap-2"><div><p className="text-[11px] font-bold" style={{color:C.text}}>{pname(item,lang)}</p><p className="text-[8.5px]" style={{color:C.faint}}>{item.loc}</p></div><span className="text-[9px] font-bold" style={{color:critical?C.danger:C.accent}}>{item.qty} {uname(item.unit,lang)}</span></div>
+              <div className="flex justify-between items-center gap-2"><div><p className="text-[11px] font-bold" style={{color:C.text}}>{pname(item,lang)}</p><p className="text-[8.5px]" style={{color:C.faint}}>{uiText(item.loc)}</p></div><span className="text-[9px] font-bold" style={{color:critical?C.danger:C.accent}}>{item.qty} {uname(item.unit,lang)}</span></div>
               <div className="mt-2 h-2 rounded-full overflow-hidden" style={{background:C.screen}}><div className="h-full rounded-full" style={{width:`${ratio}%`,background:critical?C.danger:C.accent}}/></div>
               <div className="mt-1.5 flex justify-between text-[8.5px]" style={{color:C.faint}}><span>Safety {item.min}</span><span>Capacity {item.max}</span></div>
             </div>;
@@ -1980,8 +2204,16 @@ function BusinessInsights({ t, lang, stock, onAction }) {
   </div>;
 }
 
-function TrendsScreen({ t, lang, stock, onAction }) {
+function TrendsScreen({ t, lang, stock, onAction, hasSampleData }) {
   const [seg, setSeg] = useState("demand");
+  if (!hasSampleData) {
+    return (
+      <div className="flex-1 overflow-y-auto pb-6">
+        <Header title={t.tabTrends} subtitle={uiText("Simple answers about your shop — what to sell, buy and keep.")} />
+        <EmptyDataCard t={t} />
+      </div>
+    );
+  }
   const segs = [
     { id: "demand", label: t.segDemand, icon: Sparkles },
     { id: "market", label: t.segNearby, icon: MapPinned },
@@ -1990,7 +2222,7 @@ function TrendsScreen({ t, lang, stock, onAction }) {
   ];
   return (
     <div className="flex-1 overflow-y-auto pb-6">
-      <Header title={t.tabTrends} subtitle="Simple answers about your shop — what to sell, buy and keep." />
+      <Header title={t.tabTrends} subtitle={uiText("Simple answers about your shop — what to sell, buy and keep.")} />
       <div className="mx-5 flex rounded-xl p-1 gap-1 overflow-x-auto" style={{ background: C.cardAlt, border: `1px solid ${C.border}` }}>
         {segs.map((s) => (
           <button key={s.id} onClick={() => setSeg(s.id)} className="trend-segment shrink-0 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all"
@@ -2008,7 +2240,7 @@ function TrendsScreen({ t, lang, stock, onAction }) {
 }
 
 
-// ---------- in-memory prototype accounts; production authentication needs a backend ----------
+// ---------- browser-local prototype accounts; production authentication needs a backend ----------
 
 const AUTH = {
   en: {
@@ -2018,7 +2250,15 @@ const AUTH = {
     signupTitle: "Register your shop", signupSub: "For shop owners only — takes a minute",
     owner: "Your name", shop: "Shop name", mobile: "Mobile number", type: "What kind of shop?", area: "Area / city", password: "Password",
     loginBtn: "Login to my shop", signupBtn: "Create my account", forgot: "Forgot password?",
-    forgotMsg: "Please ask support to reset it — OTP login is coming soon.",
+    resetTitle: "Reset your password", resetSub: "Enter your mobile number and recovery code",
+    recoveryCode: "Recovery code", resetPassword: "New password", resetBtn: "Reset password", backToLogin: "Back to login",
+    recoveryInstructions: "Save this recovery code somewhere safe. It is shown only once and works in this browser.",
+    recoverySaved: "I saved my code — continue", recoveryUnavailable: "This account has no recovery code. Contact support to regain access.",
+    recoveryInvalid: "That recovery code is not correct", resetSuccess: "Password reset. Log in with your new password.",
+    emptyStockTitle: "Your stock is ready to get started",
+    emptyStockBody: "Your account starts with an empty inventory. Add or scan products when you are ready.",
+    emptyDataTitle: "Nothing here yet",
+    emptyDataBody: "This section will show information after you add products and record activity for your shop.",
     noAcct: "New here?", haveAcct: "Already have an account?",
     errOwner: "Please enter your name", errShop: "Please enter your shop name", errMobile: "Enter a valid 10-digit mobile number",
     errArea: "Please enter your area", errPass: "Password must be at least 6 characters",
@@ -2033,7 +2273,15 @@ const AUTH = {
     signupTitle: "अपनी दुकान का खाता बनाएं", signupSub: "एक मिनट से कम लगेगा",
     owner: "आपका नाम", shop: "दुकान का नाम", mobile: "मोबाइल नंबर", type: "कैसी दुकान है?", area: "इलाका / शहर", password: "पासवर्ड",
     loginBtn: "दुकान में लॉगिन करें", signupBtn: "मेरा खाता बनाएं", forgot: "पासवर्ड भूल गए?",
-    forgotMsg: "रीसेट के लिए सपोर्ट से पूछें — OTP लॉगिन जल्द आ रहा है।",
+    resetTitle: "पासवर्ड रीसेट करें", resetSub: "मोबाइल नंबर और रिकवरी कोड दर्ज करें",
+    recoveryCode: "रिकवरी कोड", resetPassword: "नया पासवर्ड", resetBtn: "पासवर्ड रीसेट करें", backToLogin: "लॉगिन पर वापस जाएं",
+    recoveryInstructions: "रिकवरी कोड को सुरक्षित जगह पर रखें। यह केवल एक बार दिखेगा और इसी ब्राउज़र में काम करेगा।",
+    recoverySaved: "कोड सेव कर लिया — आगे बढ़ें", recoveryUnavailable: "इस खाते के लिए रिकवरी कोड नहीं है। सहायता के लिए सपोर्ट से संपर्क करें।",
+    recoveryInvalid: "रिकवरी कोड सही नहीं है", resetSuccess: "पासवर्ड रीसेट हो गया। नए पासवर्ड से लॉगिन करें।",
+    emptyStockTitle: "आपकी इन्वेंट्री शुरू करने के लिए तैयार है",
+    emptyStockBody: "आपका खाता खाली इन्वेंट्री से शुरू होता है। तैयार होने पर उत्पाद जोड़ें या स्कैन करें।",
+    emptyDataTitle: "अभी यहां कुछ नहीं है",
+    emptyDataBody: "उत्पाद जोड़ने और दुकान की गतिविधि दर्ज करने के बाद यहां जानकारी दिखेगी।",
     noAcct: "नए हैं?", haveAcct: "पहले से खाता है?",
     errOwner: "अपना नाम लिखें", errShop: "दुकान का नाम लिखें", errMobile: "सही 10 अंकों का मोबाइल नंबर डालें",
     errArea: "अपना इलाका लिखें", errPass: "पासवर्ड कम से कम 6 अक्षर का हो",
@@ -2048,7 +2296,15 @@ const AUTH = {
     signupTitle: "तुमच्या दुकानाचे खाते तयार करा", signupSub: "एका मिनिटापेक्षा कमी वेळ",
     owner: "तुमचे नाव", shop: "दुकानाचे नाव", mobile: "मोबाइल नंबर", type: "कोणते दुकान?", area: "परिसर / शहर", password: "पासवर्ड",
     loginBtn: "दुकानात लॉगिन करा", signupBtn: "माझे खाते तयार करा", forgot: "पासवर्ड विसरलात?",
-    forgotMsg: "रीसेटसाठी सपोर्टला विचारा — OTP लॉगिन लवकरच येत आहे.",
+    resetTitle: "पासवर्ड रीसेट करा", resetSub: "मोबाइल नंबर आणि रिकव्हरी कोड टाका",
+    recoveryCode: "रिकव्हरी कोड", resetPassword: "नवीन पासवर्ड", resetBtn: "पासवर्ड रीसेट करा", backToLogin: "लॉगिनवर परत जा",
+    recoveryInstructions: "रिकव्हरी कोड सुरक्षित ठेवा. तो फक्त एकदाच दिसेल आणि याच ब्राउझरमध्ये काम करेल.",
+    recoverySaved: "कोड जतन केला — पुढे जा", recoveryUnavailable: "या खात्यासाठी रिकव्हरी कोड नाही. मदतीसाठी सपोर्टशी संपर्क साधा.",
+    recoveryInvalid: "रिकव्हरी कोड चुकीचा आहे", resetSuccess: "पासवर्ड रीसेट झाला. नवीन पासवर्डने लॉगिन करा.",
+    emptyStockTitle: "तुमची इन्व्हेंटरी सुरू करण्यासाठी तयार आहे",
+    emptyStockBody: "तुमचे खाते रिकाम्या इन्व्हेंटरीने सुरू होते. तयार झाल्यावर उत्पादने जोडा किंवा स्कॅन करा.",
+    emptyDataTitle: "इथे अजून काही नाही",
+    emptyDataBody: "उत्पादने जोडल्यानंतर आणि दुकानातील व्यवहार नोंदवल्यानंतर येथे माहिती दिसेल.",
     noAcct: "नवीन आहात?", haveAcct: "आधीच खाते आहे?",
     errOwner: "तुमचे नाव लिहा", errShop: "दुकानाचे नाव लिहा", errMobile: "योग्य 10 अंकी मोबाइल नंबर टाका",
     errArea: "तुमचा परिसर लिहा", errPass: "पासवर्ड किमान 6 अक्षरांचा असावा",
@@ -2070,7 +2326,7 @@ function Awning({ h = 16, n = 14 }) {
 
 function StorefrontIllustration() {
   return (
-    <svg className="storefront-illustration" viewBox="0 0 420 150" role="img" aria-label="Illustration of a neighborhood shop">
+    <svg className="storefront-illustration" viewBox="0 0 420 150" role="img" aria-label={uiText("Illustration of a neighborhood shop")}>
       <ellipse cx="208" cy="140" rx="188" ry="9" fill="#042f25" opacity=".42" />
       <path d="M72 61h276v77H72z" fill="#f4dfaa" />
       <path d="M84 73h121v65H84z" fill="#fff6d9" />
@@ -2178,14 +2434,15 @@ function Field({ icon: Icon, label, error, right, ...props }) {
   );
 }
 
-function AuthScreen({ lang, setLang, lightMode, setLightMode, accounts, onAuth, onRegister }) {
+function AuthScreen({ lang, setLang, lightMode, setLightMode, accounts, onAuth, onRegister, onResetPassword }) {
   const a = AUTH[lang];
   const [mode, setMode] = useState("login");
-  const [f, setF] = useState({ owner: "", shop: "", phone: "", type: "kirana", area: "", password: "" });
+  const [f, setF] = useState({ owner: "", shop: "", phone: "", type: "kirana", area: "", password: "", recoveryCode: "" });
   const [err, setErr] = useState({});
   const [showPw, setShowPw] = useState(false);
   const [note, setNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [pendingRecovery, setPendingRecovery] = useState(null);
   const set = (k) => (e) => { setF((p) => ({ ...p, [k]: e.target.value })); setErr((p) => ({ ...p, [k]: "" })); setNote(""); };
   const switchMode = (m) => { setMode(m); setErr({}); setNote(""); };
 
@@ -2200,10 +2457,12 @@ function AuthScreen({ lang, setLang, lightMode, setLightMode, accounts, onAuth, 
       if (!f.shop.trim()) bad.shop = a.errShop;
       if (!f.area.trim()) bad.area = a.errArea;
     }
+    if (mode === "reset" && !f.recoveryCode.trim()) bad.recoveryCode = a.recoveryCode;
     if (Object.keys(bad).length) return setErr(bad);
     const found = accounts.find((x) => x.phone === phone);
     if (mode === "login" && !found) return setErr({ phone: a.errNone });
     if (mode === "signup" && found) return setErr({ phone: a.errExists });
+    if (mode === "reset" && !found) return setErr({ phone: a.errNone });
     setSubmitting(true);
     try {
       if (mode === "login") {
@@ -2211,23 +2470,62 @@ function AuthScreen({ lang, setLang, lightMode, setLightMode, accounts, onAuth, 
           setErr({ password: a.errWrong });
           return;
         }
-        const { passwordSalt, passwordHash, ...profile } = found;
+        const { passwordSalt, passwordHash, recoverySalt, recoveryHash, ...profile } = found;
         return onAuth(profile);
       }
-      const credentials = await createPasswordHash(f.password);
-      const acct = { owner: f.owner.trim(), shop: f.shop.trim(), phone, type: f.type, area: f.area.trim(), ...credentials };
-      if (!onRegister(acct)) {
-        setNote("Could not save your account in this browser. Check browser storage settings and try again.");
+      if (mode === "reset") {
+        if (!found.recoverySalt || !found.recoveryHash) {
+          setNote(a.recoveryUnavailable);
+          return;
+        }
+        const recoveryCode = f.recoveryCode.replace(/[^0-9a-f]/gi, "").toUpperCase();
+        if (!await verifyPassword(recoveryCode, found.recoverySalt, found.recoveryHash)) {
+          setErr({ recoveryCode: a.recoveryInvalid });
+          return;
+        }
+        const credentials = await createPasswordHash(f.password);
+        if (!onResetPassword(phone, credentials)) {
+          setNote(uiText("Could not save your password in this browser. Check browser storage settings and try again."));
+          return;
+        }
+        setMode("login");
+        setF((previous) => ({ ...previous, password: "", recoveryCode: "" }));
+        setErr({});
+        setNote(a.resetSuccess);
+        return;
       }
+      const recoveryCode = createRecoveryCode();
+      const [credentials, recoveryCredentials] = await Promise.all([
+        createPasswordHash(f.password),
+        createPasswordHash(recoveryCode),
+      ]);
+      const acct = {
+        owner: f.owner.trim(),
+        shop: f.shop.trim(),
+        phone,
+        type: f.type,
+        area: f.area.trim(),
+        ...credentials,
+        recoverySalt: recoveryCredentials.passwordSalt,
+        recoveryHash: recoveryCredentials.passwordHash,
+      };
+      if (!onRegister(acct)) {
+        setNote(uiText("Could not save your account in this browser. Check browser storage settings and try again."));
+        return;
+      }
+      const { passwordSalt, passwordHash, recoverySalt, recoveryHash, ...profile } = acct;
+      setPendingRecovery({ code: recoveryCode, profile });
     } catch (error) {
       console.error("Secure account authentication failed.", error);
-      setNote("Secure sign-in is unavailable. Please use a supported browser and try again.");
+      setNote(uiText("Secure sign-in is unavailable. Please use a supported browser and try again."));
     } finally {
       setSubmitting(false);
     }
   };
 
   const isLogin = mode === "login";
+  const isSignup = mode === "signup";
+  const isReset = mode === "reset";
   return (
     <div className="auth-screen min-h-screen flex flex-col" style={{ background: C.screen, color: C.text }}>
       <div className="auth-header relative overflow-hidden" style={{ background: "linear-gradient(160deg,#064E36 0%,#0B8A57 100%)", paddingBottom: 24 }}>
@@ -2237,10 +2535,10 @@ function AuthScreen({ lang, setLang, lightMode, setLightMode, accounts, onAuth, 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-0.5 rounded-full p-1" style={{ background: "rgba(255,255,255,0.16)" }}>
               {LANGS.map((l) => (
-                <button key={l.id} type="button" onClick={() => setLang(l.id)} className="pill-btn px-2.5 py-1 rounded-full text-[12px] font-bold" style={{ background: lang === l.id ? "#fff" : "transparent", color: lang === l.id ? "#064E36" : "#fff" }}>{l.label}</button>
+                <button key={l.id} type="button" aria-label={l.name} title={l.name} onClick={() => setLang(l.id)} className="pill-btn px-2.5 py-1 rounded-full text-[12px] font-bold" style={{ background: lang === l.id ? "#fff" : "transparent", color: lang === l.id ? "#064E36" : "#fff" }}>{l.label}</button>
               ))}
             </div>
-            <button type="button" aria-label="Toggle theme" onClick={() => setLightMode((v) => !v)} className="pill-btn flex items-center justify-center rounded-full" style={{ width: 36, height: 36, background: "rgba(255,255,255,0.16)", color: "#fff" }}>
+            <button type="button" aria-label={uiText("Toggle theme")} onClick={() => setLightMode((v) => !v)} className="pill-btn flex items-center justify-center rounded-full" style={{ width: 36, height: 36, background: "rgba(255,255,255,0.16)", color: "#fff" }}>
               {lightMode ? <Moon size={16} /> : <Sun size={16} />}
             </button>
           </div>
@@ -2265,16 +2563,24 @@ function AuthScreen({ lang, setLang, lightMode, setLightMode, accounts, onAuth, 
 
       <div className="auth-form-wrap relative mx-auto w-full max-w-[460px] px-4 pb-10">
         <div className="rounded-[28px] p-5" style={{ background: C.card, border: `1px solid ${C.border}`, boxShadow: "0 24px 48px -20px rgba(6,60,40,.45)" }}>
-          <div className="flex rounded-2xl p-1" style={{ background: C.cardAlt }}>
-            {[["login", a.login], ["signup", a.signup]].map(([id, label]) => (
-              <button key={id} type="button" onClick={() => switchMode(id)} className="pill-btn flex-1 rounded-xl py-3 text-[14px] font-extrabold" style={{ background: mode === id ? C.card : "transparent", color: mode === id ? C.accent : C.faint, boxShadow: mode === id ? C.shadow : "none" }}>{label}</button>
-            ))}
-          </div>
-          <h2 className="mt-5 text-[22px] font-extrabold" style={{ fontFamily: fontHead, color: C.text }}>{isLogin ? a.loginTitle : a.signupTitle}</h2>
-          <p className="text-[13px] mt-1" style={{ color: C.sub }}>{isLogin ? a.loginSub : a.signupSub}</p>
+          {pendingRecovery ? <div className="text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl" style={{ background: `${C.accent}1f` }}><ShieldCheck size={24} color={C.accent} /></div>
+            <h2 className="mt-4 text-[20px] font-extrabold" style={{ fontFamily: fontHead, color: C.text }}>{a.recoveryCode}</h2>
+            <p className="mt-2 text-[12px] leading-relaxed" style={{ color: C.sub }}>{a.recoveryInstructions}</p>
+            <p className="mt-4 rounded-xl px-3 py-4 text-[17px] font-extrabold tracking-[0.12em]" style={{ background: C.cardAlt, color: C.text, fontFamily: fontMono }} aria-label={a.recoveryCode}>{pendingRecovery.code}</p>
+            <button type="button" onClick={() => onAuth(pendingRecovery.profile)} className="cta mt-5 w-full rounded-2xl py-4 text-[15px] font-extrabold" style={{ background: `linear-gradient(135deg, ${C.accent}, ${C.accent2})`, color: C.onAccent }}>{a.recoverySaved}</button>
+          </div> : <>
+            {isReset ? <button type="button" onClick={() => switchMode("login")} className="pill-btn text-[13px] font-bold" style={{ color: C.accent }}>← {a.backToLogin}</button> :
+              <div className="flex rounded-2xl p-1" style={{ background: C.cardAlt }}>
+                {[["login", a.login], ["signup", a.signup]].map(([id, label]) => (
+                  <button key={id} type="button" onClick={() => switchMode(id)} className="pill-btn flex-1 rounded-xl py-3 text-[14px] font-extrabold" style={{ background: mode === id ? C.card : "transparent", color: mode === id ? C.accent : C.faint, boxShadow: mode === id ? C.shadow : "none" }}>{label}</button>
+                ))}
+              </div>}
+            <h2 className="mt-5 text-[22px] font-extrabold" style={{ fontFamily: fontHead, color: C.text }}>{isReset ? a.resetTitle : isLogin ? a.loginTitle : a.signupTitle}</h2>
+            <p className="text-[13px] mt-1" style={{ color: C.sub }}>{isReset ? a.resetSub : isLogin ? a.loginSub : a.signupSub}</p>
 
-          <form onSubmit={submit} noValidate className="mt-4 space-y-3.5">
-            {!isLogin && <>
+            <form onSubmit={submit} noValidate className="mt-4 space-y-3.5">
+            {isSignup && <>
               <Field icon={User} label={a.owner} value={f.owner} onChange={set("owner")} error={err.owner} autoComplete="name" />
               <Field icon={Store} label={a.shop} value={f.shop} onChange={set("shop")} error={err.shop} />
               <div>
@@ -2287,24 +2593,28 @@ function AuthScreen({ lang, setLang, lightMode, setLightMode, accounts, onAuth, 
               </div>
             </>}
             <Field icon={Phone} label={a.mobile} value={f.phone} onChange={set("phone")} error={err.phone} inputMode="numeric" maxLength={14} placeholder="98765 43210" autoComplete="tel" />
-            {!isLogin && <Field icon={MapPin} label={a.area} value={f.area} onChange={set("area")} error={err.area} />}
-            <Field icon={Lock} label={a.password} type={showPw ? "text" : "password"} value={f.password} onChange={set("password")} error={err.password} autoComplete={isLogin ? "current-password" : "new-password"}
-              right={<button type="button" aria-label="Show password" onClick={() => setShowPw((v) => !v)} className="pill-btn p-1" style={{ color: C.faint }}>{showPw ? <EyeOff size={18} /> : <Eye size={18} />}</button>} />
+            {isSignup && <Field icon={MapPin} label={a.area} value={f.area} onChange={set("area")} error={err.area} />}
+            {isReset && <Field icon={ShieldCheck} label={a.recoveryCode} value={f.recoveryCode} onChange={set("recoveryCode")} error={err.recoveryCode} autoComplete="one-time-code" />}
+            <Field icon={Lock} label={isReset ? a.resetPassword : a.password} type={showPw ? "text" : "password"} value={f.password} onChange={set("password")} error={err.password} autoComplete={isLogin ? "current-password" : "new-password"}
+              right={<button type="button" aria-label={uiText(showPw ? "Hide password" : "Show password")} onClick={() => setShowPw((v) => !v)} className="pill-btn p-1" style={{ color: C.faint }}>{showPw ? <EyeOff size={18} /> : <Eye size={18} />}</button>} />
             {isLogin && (
               <div className="flex justify-end">
-                <button type="button" onClick={() => setNote(a.forgotMsg)} className="pill-btn text-[13px] font-bold" style={{ color: C.accent }}>{a.forgot}</button>
+                <button type="button" onClick={() => switchMode("reset")} className="pill-btn text-[13px] font-bold" style={{ color: C.accent }}>{a.forgot}</button>
               </div>
             )}
             {note && <p className="text-[12px] font-semibold rounded-xl px-3 py-2" style={{ background: `${C.warn}1f`, color: C.warn }}>{note}</p>}
             <button type="submit" disabled={submitting} className="cta w-full rounded-2xl py-4 text-[16px] font-extrabold flex items-center justify-center gap-2 disabled:opacity-70" style={{ background: `linear-gradient(135deg, ${C.accent}, ${C.accent2})`, color: C.onAccent }}>
-              {submitting ? "Please wait…" : isLogin ? a.loginBtn : a.signupBtn} <ArrowRight size={18} />
+              {submitting ? uiText("Please wait…") : isReset ? a.resetBtn : isLogin ? a.loginBtn : a.signupBtn} <ArrowRight size={18} />
             </button>
           </form>
 
-          <div className="mt-4 flex items-center gap-3"><span className="flex-1 h-px" style={{ background: C.border }} /><span className="text-[12px]" style={{ color: C.faint }}>{isLogin ? a.noAcct : a.haveAcct}</span><span className="flex-1 h-px" style={{ background: C.border }} /></div>
-          <div className="mt-3 grid grid-cols-1 gap-2.5">
-            <button type="button" onClick={() => switchMode(isLogin ? "signup" : "login")} className="pill-btn rounded-2xl py-3 text-[13px] font-extrabold" style={{ background: C.cardAlt, color: C.text, border: `1.5px solid ${C.borderStrong}` }}>{isLogin ? a.signup : a.login}</button>
-          </div>
+            {!isReset && <>
+              <div className="mt-4 flex items-center gap-3"><span className="flex-1 h-px" style={{ background: C.border }} /><span className="text-[12px]" style={{ color: C.faint }}>{isLogin ? a.noAcct : a.haveAcct}</span><span className="flex-1 h-px" style={{ background: C.border }} /></div>
+              <div className="mt-3 grid grid-cols-1 gap-2.5">
+                <button type="button" onClick={() => switchMode(isLogin ? "signup" : "login")} className="pill-btn rounded-2xl py-3 text-[13px] font-extrabold" style={{ background: C.cardAlt, color: C.text, border: `1.5px solid ${C.borderStrong}` }}>{isLogin ? a.signup : a.login}</button>
+              </div>
+            </>}
+          </>}
         </div>
         <p className="mt-4 flex items-center justify-center gap-1.5 text-[12px]" style={{ color: C.faint }}><ShieldCheck size={14} /> {a.forShops}</p>
       </div>
@@ -2314,8 +2624,8 @@ function AuthScreen({ lang, setLang, lightMode, setLightMode, accounts, onAuth, 
 
 export default function DukaanMitraPrototype() {
   const [tab, setTab] = useState("home");
-  const [lang, setLang] = useState("en");
-  const [stock, setStock] = useState(initialStock);
+  const [lang, setLang] = useState(loadSavedLanguage);
+  const [stock, setStock] = useState([]);
   const [dismissedAlertIds, setDismissedAlertIds] = useState([]);
   const [showReason, setShowReason] = useState(false);
   const [showScan, setShowScan] = useState(false);
@@ -2329,12 +2639,29 @@ export default function DukaanMitraPrototype() {
   const [splash, setSplash] = useState(true);
   useEffect(() => { const id = setTimeout(() => setSplash(false), 2200); return () => clearTimeout(id); }, []);
   useEffect(() => () => clearTimeout(toastTimerRef.current), []);
+  useEffect(() => {
+    try {
+      localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+    } catch (error) {
+      console.error("Unable to save the language preference.", error);
+    }
+  }, [lang]);
+  useEffect(() => {
+    if (!user) return;
+    try {
+      localStorage.setItem(`${STOCK_STORAGE_KEY}.${user.phone}`, JSON.stringify(stock));
+    } catch (error) {
+      console.error("Unable to save shop stock.", error);
+    }
+  }, [stock, user]);
+  activeLanguage = lang;
   Object.assign(C, lightMode ? LIGHT_C : DARK_C);
   if (user) Object.assign(USER, user);
   USER.logout = () => {
     setUser(null); setTab("home"); setDismissedAlertIds([]);
   };
   const handleAuth = (acct) => {
+    setStock(loadSavedStock(acct.phone));
     Object.assign(USER, acct); setUser(acct); setTab("home"); setDismissedAlertIds([]);
     window.scrollTo?.(0, 0);
   };
@@ -2347,8 +2674,17 @@ export default function DukaanMitraPrototype() {
       return false;
     }
     setAccounts(nextAccounts);
-    const { passwordSalt, passwordHash, ...profile } = acct;
-    handleAuth(profile);
+    return true;
+  };
+  const handleResetPassword = (phone, credentials) => {
+    const nextAccounts = accounts.map((account) => account.phone === phone ? { ...account, ...credentials } : account);
+    try {
+      localStorage.setItem(ACCOUNT_STORAGE_KEY, JSON.stringify(nextAccounts));
+    } catch (error) {
+      console.error("Unable to save the reset shop password.", error);
+      return false;
+    }
+    setAccounts(nextAccounts);
     return true;
   };
   const t = T[lang];
@@ -2357,7 +2693,8 @@ export default function DukaanMitraPrototype() {
     setToast(message);
     toastTimerRef.current = setTimeout(() => setToast(""), 2200);
   };
-  const activeAlertCount = Math.max(0, 3 - dismissedAlertIds.length);
+  const isDemoAccount = user?.phone === DEMO_PHONE;
+  const activeAlertCount = isDemoAccount ? Math.max(0, 3 - dismissedAlertIds.length) : 0;
 
   const TABS = [
     { id: "home", label: t.tabHome, icon: Home },
@@ -2945,13 +3282,13 @@ export default function DukaanMitraPrototype() {
         <h1 className="splash-text mt-6 text-[34px] font-extrabold" style={{ fontFamily: fontHead }}>{T[lang].appTitle}</h1>
         <p className="splash-text mt-2 text-[13px] font-bold uppercase tracking-[0.16em]" style={{ color: "#F7C95C" }}>{AUTH[lang].forShops}</p>
         <div className="scanner-dots mt-8"><i style={{ background: "#F7C95C" }} /><i style={{ background: "#F7C95C" }} /><i style={{ background: "#F7C95C" }} /></div>
-      </div> : !user ? <AuthScreen lang={lang} setLang={setLang} lightMode={lightMode} setLightMode={setLightMode} accounts={accounts} onAuth={handleAuth} onRegister={handleRegister} /> : <PhoneFrame>
+      </div> : !user ? <AuthScreen lang={lang} setLang={setLang} lightMode={lightMode} setLightMode={setLightMode} accounts={accounts} onAuth={handleAuth} onRegister={handleRegister} onResetPassword={handleResetPassword} /> : <PhoneFrame>
         <StatusBar lang={lang} setLang={setLang} lightMode={lightMode} setLightMode={setLightMode} />
-        {tab === "home" && <HomeScreen t={t} stock={stock} onScan={() => setShowScan(true)} onOpenReason={() => setShowReason(true)} onLater={() => notify(t.notNow)} onRecordSale={() => setActionMode("sale")} onAddProduct={() => setActionMode("add")} onOpenBrief={() => setShowBrief(true)} />}
+        {tab === "home" && <HomeScreen t={t} stock={stock} showPromotionalImages={isDemoAccount} onScan={() => setShowScan(true)} onOpenReason={() => setShowReason(true)} onLater={() => notify(t.notNow)} onRecordSale={() => setActionMode("sale")} onAddProduct={() => setActionMode("add")} onOpenBrief={() => setShowBrief(true)} />}
         {tab === "stock" && <StockScreen t={t} lang={lang} stock={stock} onChange={changeQty} onScanClick={() => setShowScan(true)} onAddProduct={() => setActionMode("add")} onRecordSale={() => setActionMode("sale")} />}
-        {tab === "alerts" && <AlertsScreen t={t} dismissedIds={dismissedAlertIds} onDismiss={(id) => setDismissedAlertIds((current) => current.includes(id) ? current : [...current, id])} onAction={notify} />}
-        {tab === "trends" && <TrendsScreen t={t} lang={lang} stock={stock} onAction={notify} />}
-        {tab === "network" && <NetworkScreen t={t} />}
+        {tab === "alerts" && <AlertsScreen t={t} dismissedIds={dismissedAlertIds} onDismiss={(id) => setDismissedAlertIds((current) => current.includes(id) ? current : [...current, id])} onAction={notify} hasSampleData={isDemoAccount} />}
+        {tab === "trends" && <TrendsScreen t={t} lang={lang} stock={stock} onAction={notify} hasSampleData={isDemoAccount} />}
+        {tab === "network" && <NetworkScreen t={t} hasSampleData={isDemoAccount} />}
 
         <TopNav tabs={TABS} tab={tab} setTab={setTab} alertCount={activeAlertCount} alertCountLabel={t.alertsCount} />
 
