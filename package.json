@@ -1,0 +1,18 @@
+{
+  "name": "dukaan-mitra",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "lucide-react": "latest",
+    "react": "^19.2.8",
+    "react-dom": "latest",
+    "vite": "latest"
+  }
+}
